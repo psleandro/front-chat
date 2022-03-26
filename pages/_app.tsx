@@ -1,8 +1,16 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import '../styles/global';
+import 'antd/dist/antd.css';
+import ptBR from 'antd/lib/locale/pt_BR';
+
+import { ConfigProvider } from 'antd';
+import type { AppProps } from 'next/app';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <ConfigProvider locale={ptBR}>
+      <Component {...pageProps} />
+    </ConfigProvider>
+  );
 }
 
-export default MyApp
+export default MyApp;
