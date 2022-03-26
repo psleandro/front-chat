@@ -9,8 +9,9 @@ import {
 } from '@ant-design/icons';
 
 import * as S from './styles';
+import { useAuth } from '../../../contexts/auth';
 
-function SendMessage({ socket }) {
+function SendMessage({ user, socket }) {
   const [message, setMessage] = useState('');
 
   const handleSendMessage = () => {
@@ -18,9 +19,9 @@ function SendMessage({ socket }) {
 
     const sent_at = new Date().toLocaleTimeString();
     const messageObject = {
-      userId: 'Leandro',
-      username: 'Leandro',
-      color: '#f56a00',
+      userId: user.userId,
+      username: user.username,
+      color: user.color,
       messageId: newUuid(),
       message,
       sent_at,
@@ -86,17 +87,15 @@ function Messages({ socket }) {
 }
 
 export function Chat() {
+  const { user } = useAuth();
   const [showChat, setShowChat] = useState(true);
 
   const socket = useMemo(() => io('http://localhost:5000'), []);
 
   useEffect(() => {
-    socket.emit('join room', {
-      userId: 'Leandro',
-      username: 'Leandro',
-      socketId: socket.id,
-    });
-  }, []);
+    if (!user) return;
+    socket.emit('join room', user);
+  }, [user]);
 
   return (
     <>
@@ -110,7 +109,7 @@ export function Chat() {
         onClose={() => setShowChat(v => !v)}
         closeIcon={<VerticalLeftOutlined />}
         bodyStyle={{ padding: '0px' }}
-        footer={<SendMessage socket={socket} />}
+        footer={<SendMessage user={user} socket={socket} />}
         mask={false}
       >
         <S.ChatContent>
