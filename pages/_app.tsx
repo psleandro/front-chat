@@ -4,11 +4,14 @@ import ptBR from 'antd/lib/locale/pt_BR';
 
 import { ConfigProvider } from 'antd';
 import type { AppProps } from 'next/app';
+import { AuthProvider } from '../src/contexts/auth';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ConfigProvider locale={ptBR}>
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
     </ConfigProvider>
   );
 }

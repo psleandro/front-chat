@@ -8,20 +8,30 @@ import {
 import { v4 as newUuid } from 'uuid';
 import { useRouter } from 'next/router';
 import * as S from './styles';
+import { useAuth } from '../../contexts/auth';
 
 export function EnterRoom() {
   const [name, setName] = useState('');
   const [roomID, setRoomID] = useState('');
 
+  const { signIn } = useAuth();
   const router = useRouter();
 
-  const joinInMeet = () => {
-    router.push(`/room/${roomID}`);
+  const joinInMeet = (toRoomID: string) => {
+    const userId = newUuid();
+    const color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    const user = {
+      userId,
+      username: name,
+      color,
+    };
+    signIn(user);
+    router.push(`/room/${toRoomID}`);
   };
 
   const createMeet = () => {
     const newRoomID = newUuid();
-    router.push(`/room/${newRoomID}`);
+    joinInMeet(newRoomID);
   };
 
   return (
@@ -59,7 +69,7 @@ export function EnterRoom() {
                 <Button
                   type="primary"
                   disabled={!roomID || !name}
-                  onClick={() => joinInMeet()}
+                  onClick={() => joinInMeet(roomID)}
                 >
                   Entrar
                   <ArrowRightOutlined />
