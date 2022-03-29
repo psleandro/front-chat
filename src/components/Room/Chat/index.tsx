@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
-import { io } from 'socket.io-client';
+import { useEffect, useState } from 'react';
 import { v4 as newUuid } from 'uuid';
 import { Input, Button, Drawer, Avatar, Comment, Typography } from 'antd';
 import {
@@ -90,16 +89,9 @@ function Messages({ socket }) {
   );
 }
 
-export function Chat() {
+export function Chat({ socket }) {
   const { user } = useAuth();
   const [showChat, setShowChat] = useState(true);
-
-  const socket = useMemo(() => io('http://localhost:5000'), []);
-
-  useEffect(() => {
-    if (!user) return;
-    socket.emit('join room', user);
-  }, [user]);
 
   return (
     <>
