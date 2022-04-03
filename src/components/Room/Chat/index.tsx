@@ -64,11 +64,7 @@ function Messages({ socket }) {
     socket.on('received message', msg => {
       setMessages(msgs => [...msgs, msg]);
     });
-
-    socket.on('received my own message', msg => {
-      setMessages(msgs => [...msgs, msg]);
-    });
-  }, []);
+  }, [socket]);
 
   return (
     <S.ChatMessages>

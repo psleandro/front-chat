@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { io } from 'socket.io-client';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { useAuth } from '../../contexts/auth';
 import * as S from './styles';
 import { Chat } from './Chat';
@@ -8,17 +8,20 @@ import { StreamMedia } from './StreamMedia';
 
 export function Room() {
   const { user } = useAuth();
+  const router = useRouter();
 
-  const socket = useMemo(() => io('http://localhost:5000'), []);
+  const { roomId } = router.query;
+
+  const socket = useMemo(() => io(process.env.NEXT_PUBLIC_SERVER_URL), []);
 
   useEffect(() => {
     if (!user) {
-      Router.push('/');
+      router.push('/');
       return;
     }
 
-    socket.emit('join room', user);
-  }, [user]);
+    socket.emit('join room', roomId, user);
+  }, [user, socket, router, roomId]);
 
   return (
     <S.Container>

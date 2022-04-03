@@ -3,8 +3,13 @@ import Peer from 'simple-peer';
 import { Avatar, Card } from 'antd';
 import { AntDesignOutlined } from '@ant-design/icons';
 import * as S from './styles';
+import { IUser } from '../../../interfaces';
 
-function AudioCard() {
+interface IAudioCardProps {
+  user: IUser;
+}
+
+function AudioCard({ user }: IAudioCardProps) {
   const [muted, setMuted] = useState(true);
 
   const toggleMicrophone = () => setMuted(v => !v);
@@ -12,8 +17,11 @@ function AudioCard() {
   return (
     <S.Person>
       <Avatar
+        style={{ background: user.color }}
         size={{ xs: 180, sm: 240, md: 280, lg: 320, xl: 320, xxl: 320 }}
-      />
+      >
+        {user.username}
+      </Avatar>
       {/* <audio
         src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
         autoPlay
@@ -27,33 +35,13 @@ function AudioCard() {
 export function StreamMedia({ socket }) {
   const userMedia = useRef<HTMLAudioElement>(null);
 
+  const [users, setUsers] = useState([]);
   const [peers, setPeers] = useState([]);
   const peersRef = useRef([]);
 
-  const getUserStream = async () => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then(stream => {
-        userMedia.current.srcObject = stream;
-
-        const myPeer = new Peer({ initiator: true, stream });
-
-        socket.on('all users connected', allUsersConected => {
-          console.log('receiving all users: ', allUsersConected);
-        });
-      })
-      .catch(err => {
-        console.log('permission denied:', err.message);
-        // const peer2 = new Peer();
-        // peer2.on('signal', data => {
-        //   console.log('peer 2 recebendo signal também:', data);
-        //   peer1.signal(data);
-        // });
-      });
-  };
-
   useEffect(() => {
     socket.on('all users connected', allUsersConnected => {
+      console.log('new user entered');
       const localPeers = [];
 
       allUsersConnected.forEach(u => {
@@ -80,6 +68,15 @@ export function StreamMedia({ socket }) {
       });
 
       setPeers(localPeers);
+      setUsers(allUsersConnected);
+    });
+
+    socket.on('user-joined', (user: IUser) => {
+      setUsers(us => [...us, user]);
+    });
+
+    socket.on('user-disconnected', (socketId: string) => {
+      setUsers(us => us.filter(u => u.socketId !== socketId));
     });
 
     navigator.mediaDevices
@@ -101,11 +98,14 @@ export function StreamMedia({ socket }) {
           size={{ xs: 180, sm: 240, md: 280, lg: 320, xl: 320, xxl: 320 }}
           icon={<AntDesignOutlined />}
         />
-        <audio ref={userMedia} controls />
+        {/* <audio ref={userMedia} controls /> */}
       </S.Person>
 
-      {peers?.map(peer => (
+      {/* {peers?.map(peer => (
         <AudioCard />
+      ))} */}
+      {users?.map(peer => (
+        <AudioCard user={peer} />
       ))}
     </S.MediaContent>
   );
