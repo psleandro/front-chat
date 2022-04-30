@@ -13,4 +13,17 @@ export const Person = styled.div`
   margin: 12px;
   width: 480px;
   flex: 1 1 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: '#FFF';
+
+  h1 {
+    color: #fff;
+  }
 `;
+// export const Person = styled.div`
+//   margin: 12px;
+//   width: 480px;
+//   flex: 1 1 80px;
+// `;

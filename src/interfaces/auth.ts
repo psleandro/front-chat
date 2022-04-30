@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 
 export interface IUser {
   userId: string;
+  socketId: string;
   username: string;
   color: string;
 }
