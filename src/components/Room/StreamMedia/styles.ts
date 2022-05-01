@@ -1,5 +1,18 @@
 import styled from 'styled-components';
 
+interface IVideoProps {
+  speaking: number;
+}
+
+export const StreamArea = styled.main`
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+`;
+
 export const MediaContent = styled.main`
   display: flex;
   justify-content: flex-start;
@@ -22,8 +35,46 @@ export const Person = styled.div`
     color: #fff;
   }
 `;
-// export const Person = styled.div`
-//   margin: 12px;
-//   width: 480px;
-//   flex: 1 1 80px;
-// `;
+
+export const VideoContainer = styled.div<IVideoProps>`
+  position: relative;
+  margin: 12px;
+  width: 480px;
+  height: 360px;
+  flex: 1 1 80px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  align-items: center;
+  color: '#FFF';
+  object-fit: fill;
+  text-align: center;
+  box-shadow: ${({ speaking }) =>
+    speaking > 0 ? `0 0 ${speaking}px ${speaking}px blue` : ''};
+
+  video {
+    width: 480px;
+    height: 360px;
+    object-fit: cover;
+    text-align: center;
+  }
+
+  h1 {
+    color: #fff;
+  }
+`;
+
+export const NameContainer = styled.h1`
+  position: absolute;
+  bottom: 12px;
+  z-index: 100;
+  color: #fff;
+`;
+
+export const FooterOptions = styled.div`
+  display: flex;
+  gap: 8px;
+  align-self: center;
+  align-items: center;
+`;
