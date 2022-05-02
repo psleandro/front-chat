@@ -41,6 +41,10 @@ const peersReducer = (state: PeerState, action) => {
 export const RoomContext = createContext<RoomContextData>(null);
 
 const ws = io(process.env.NEXT_PUBLIC_SERVER_URL);
+console.log(
+  'connecting with server in URL: ',
+  process.env.NEXT_PUBLIC_SERVER_URL
+);
 
 export function RoomProvider({ children }) {
   const [myPeer, setMyPeer] = useState<PeerObj>();
