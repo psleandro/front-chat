@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import { useAuth, useRoom } from '../../../../contexts';
+import { useRoom } from '../../../../contexts';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
 
 export function MyStreamCard() {
-  const { user } = useAuth();
-  const { stream } = useRoom();
+  const { stream, isSharing } = useRoom();
 
   const [isSpeaking, setIsSpeaking] = useState<number>();
   const myMedia = useRef<HTMLVideoElement>(null);
@@ -19,8 +18,8 @@ export function MyStreamCard() {
 
   return (
     <S.VideoContainer speaking={isSpeaking}>
-      <video ref={myMedia} muted autoPlay />
-      <S.NameContainer>{user?.username} (EU)</S.NameContainer>
+      <video ref={myMedia} hidden={!isSharing} muted autoPlay />
+      <S.NameContainer>Você</S.NameContainer>
     </S.VideoContainer>
   );
 }

@@ -44,14 +44,18 @@ export const VideoContainer = styled.div<IVideoProps>`
   flex: 1 1 80px;
   display: flex;
   flex-direction: column;
+
+  background: #333;
+
   border-radius: 12px;
+
   overflow: hidden;
   align-items: center;
   color: '#FFF';
   object-fit: fill;
   text-align: center;
   box-shadow: ${({ speaking }) =>
-    speaking > 0 ? `0 0 ${speaking}px ${speaking}px blue` : ''};
+    speaking > 0 ? `0 0 ${speaking}px ${speaking}px #ff5252` : ''};
 
   video {
     width: 480px;
@@ -67,9 +71,11 @@ export const VideoContainer = styled.div<IVideoProps>`
 
 export const NameContainer = styled.h1`
   position: absolute;
-  bottom: 12px;
+  bottom: 16px;
+  left: 32px;
   z-index: 100;
   color: #fff;
+  font-size: 1rem;
 `;
 
 export const FooterOptions = styled.div`

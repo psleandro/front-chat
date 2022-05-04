@@ -4,7 +4,7 @@ import { IUser, IUserDto } from './auth';
 
 export type PeerState = Record<
   string,
-  { stream?: MediaStream; userName?: string }
+  { stream?: MediaStream; userName?: string; id?: string }
 >;
 
 interface ServerToClientEvents {

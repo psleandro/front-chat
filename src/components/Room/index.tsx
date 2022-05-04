@@ -60,8 +60,8 @@ export function Room() {
 
   return (
     <S.Container>
-      <StreamMedia />
-      <Chat socket={ws} />
+      <StreamMedia socket={ws} />
+      {/* <Chat socket={ws} /> */}
     </S.Container>
   );
 }

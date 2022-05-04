@@ -2,7 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
 
-export function PeerCard({ stream }: { stream: MediaStream }) {
+export function PeerCard({
+  stream,
+  isSharing,
+}: {
+  stream: MediaStream;
+  isSharing: boolean;
+}) {
   const [isSpeaking, setIsSpeaking] = useState<number>();
   const videoStream = useRef<HTMLVideoElement>();
 
@@ -18,7 +24,7 @@ export function PeerCard({ stream }: { stream: MediaStream }) {
   return (
     <S.VideoContainer speaking={isSpeaking}>
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <video ref={videoStream} autoPlay />
+      <video ref={videoStream} hidden={!isSharing} autoPlay />
     </S.VideoContainer>
   );
 }

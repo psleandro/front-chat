@@ -17,7 +17,7 @@ export interface IUser {
   color: string;
 }
 
-export interface IUserDto extends IUser, IPeerData { }
+export interface IUserDto extends IUser, IPeerData {}
 
 export interface AuthContextData {
   user: IUser;

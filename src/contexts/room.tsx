@@ -17,6 +17,8 @@ const peersReducer = (state: PeerState, action) => {
       ...state,
       [action.payload.peerId]: {
         ...state[action.payload.peerId],
+        username: action.payload.username,
+        id: action.payload.peerId,
         stream: action.payload.stream,
       },
     };
@@ -93,6 +95,12 @@ export function RoomProvider({ children }) {
       setStream(attStream);
       setIsSharing(v => !v);
 
+      const sharer = {
+        sharerId: myPeer.id,
+      };
+
+      ws.emit('screenShare', sharer);
+
       Object.values(myPeer?.connections).forEach(conn => {
         const videoTrack = newStream
           ?.getTracks()
@@ -161,7 +169,11 @@ export function RoomProvider({ children }) {
         console.log('other peer receiving stream: ', user.username);
         dispatchPeers({
           type: 'ADD_PEER_STREAM',
-          payload: { peerId: user.peerId, stream: remotePeerStream },
+          payload: {
+            peerId: user.peerId,
+            stream: remotePeerStream,
+            username: user.username,
+          },
         });
       });
     });
@@ -174,7 +186,7 @@ export function RoomProvider({ children }) {
         console.log('my peer recieving stream: ', remotePeerStream);
         dispatchPeers({
           type: 'ADD_PEER_STREAM',
-          payload: { peerId: call.peer, stream: remotePeerStream },
+          payload: { peerId: call.peer, stream: remotePeerStream, username },
         });
       });
     });

@@ -37,12 +37,12 @@ export function UserOptions() {
         type={isSharing ? 'primary' : 'default'}
         icon={<DesktopOutlined />}
       />
-      <Button
+      {/*  <Button
         size="large"
         shape="circle"
         onClick={() => toggleMicrophone()}
         icon={<CameraOutlined />}
-      />
+      /> */}
     </S.FooterOptions>
   );
 }
