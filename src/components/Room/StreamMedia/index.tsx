@@ -15,7 +15,8 @@ export function StreamMedia({ socket }) {
 
   useEffect(() => {
     socket.on('sharer', data => {
-      setUserSharingId(data.sharerId);
+      if (data.sharing) setUserSharingId(data.sharerId);
+      else setUserSharingId(undefined);
     });
   }, [socket]);
 

@@ -97,6 +97,7 @@ export function RoomProvider({ children }) {
 
       const sharer = {
         sharerId: myPeer.id,
+        sharing: !isSharing,
       };
 
       ws.emit('screenShare', sharer);
