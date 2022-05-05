@@ -12,16 +12,18 @@ export interface IPeerData {
 
 export interface IUser {
   userId: string;
-  socketId: string;
-  username: string;
-  color: string;
+  socketId?: string;
+  // username: string;
+  // color: string;
+  name?: string;
+  email?: string;
+  image?: string;
 }
 
 export interface IUserDto extends IUser, IPeerData {}
 
 export interface AuthContextData {
   user: IUser;
-  signIn: (userData: createUserDto) => void;
 }
 
 export interface AuthProviderProps {
