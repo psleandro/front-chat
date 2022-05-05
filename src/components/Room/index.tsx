@@ -4,7 +4,6 @@ import { Button, Input, notification } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
 import { useAuth, useRoom } from '../../contexts';
 import * as S from './styles';
-import { Chat } from './Chat';
 import { StreamMedia } from './StreamMedia';
 
 export function Room() {
