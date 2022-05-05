@@ -1,7 +1,11 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface IVideoProps {
   speaking: number;
+}
+
+interface IUserCard extends IVideoProps {
+  isSharing: boolean;
 }
 
 export const StreamArea = styled.main`
@@ -83,4 +87,24 @@ export const FooterOptions = styled.div`
   gap: 8px;
   align-self: center;
   align-items: center;
+`;
+
+export const UserCard = styled.div<IUserCard>`
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  flex: 1;
+
+  ${({ isSharing }) =>
+    isSharing &&
+    css`
+      display: none;
+    `}
+
+  img {
+    border-radius: 50%;
+  }
 `;

@@ -3,19 +3,27 @@ import { Button } from 'antd';
 import {
   AudioMutedOutlined,
   AudioOutlined,
-  CameraOutlined,
   DesktopOutlined,
 } from '@ant-design/icons';
+import { ImPhoneHangUp } from 'react-icons/im';
+import { useRouter } from 'next/router';
 import { useRoom } from '../../../../contexts';
 import * as S from '../styles';
 
 export function UserOptions() {
   const [muted, setMuted] = useState<boolean>(false);
-  const { isSharing, toggleMicrophone, switchStreamToScreen } = useRoom();
+  const { isSharing, toggleMicrophone, switchStreamToScreen, ws } = useRoom();
+
+  const router = useRouter();
 
   const handleToggleMicrophone = () => {
     toggleMicrophone();
     setMuted(v => !v);
+  };
+
+  const disconnectRoom = () => {
+    ws.disconnect();
+    router.push('/');
   };
 
   return (
@@ -37,12 +45,13 @@ export function UserOptions() {
         type={isSharing ? 'primary' : 'default'}
         icon={<DesktopOutlined />}
       />
-      {/*  <Button
+      <Button
         size="large"
         shape="circle"
-        onClick={() => toggleMicrophone()}
-        icon={<CameraOutlined />}
-      /> */}
+        onClick={() => disconnectRoom()}
+        icon={<ImPhoneHangUp />}
+        style={{ background: 'red', color: '#fff' }}
+      />
     </S.FooterOptions>
   );
 }
