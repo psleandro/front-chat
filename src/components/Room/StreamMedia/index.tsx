@@ -28,6 +28,7 @@ export function StreamMedia({ socket }) {
           <PeerCard
             stream={peer.stream}
             isSharing={peer.id === userSharingId}
+            peerId={peer.id}
           />
         ))}
       </S.MediaContent>

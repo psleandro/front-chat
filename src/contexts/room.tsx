@@ -55,8 +55,11 @@ export function RoomProvider({ children }) {
   const [stream, setStream] = useState<MediaStream>();
 
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
+  const [allUsers, setAllUsers] = useState<Array<IUser>>([]);
 
-  const getUsers = (users: { users: IUser[] }) => {
+  const getUsers = users => {
+    console.log('all users in the room ', users);
+    setAllUsers(users);
     dispatchPeers({ type: 'ADD_ALL_PEERS', payload: { peers: users } });
   };
 
@@ -162,6 +165,8 @@ export function RoomProvider({ children }) {
     if (!stream) return;
 
     ws.on('user-joined', (user: IUserDto) => {
+      console.log('user joined in room: ', user);
+      setAllUsers(v => [...v, user]);
       const call = myPeer.call(user.peerId, stream, {
         metadata: { username: user.username },
       });
@@ -208,6 +213,7 @@ export function RoomProvider({ children }) {
         toggleMicrophone,
         isSharing,
         switchStreamToScreen,
+        allUsers,
       }}
     >
       {children}
