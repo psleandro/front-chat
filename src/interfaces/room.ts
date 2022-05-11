@@ -15,6 +15,7 @@ interface ServerToClientEvents {
 interface ClientToServerEvents {
   ['join-room']: (roomId: string | string[], user: IUserDto) => void;
   ['req-room-invite-verification']: (roomId: string | string[]) => void;
+  ['disconnect']: () => void;
 }
 
 export interface RoomContextData {

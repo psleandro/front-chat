@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useReducer,
   useState,
 } from 'react';
@@ -42,13 +43,17 @@ const peersReducer = (state: PeerState, action) => {
 
 export const RoomContext = createContext<RoomContextData>(null);
 
-const ws = io(process.env.NEXT_PUBLIC_SERVER_URL);
-console.log(
-  'connecting with server in URL: ',
-  process.env.NEXT_PUBLIC_SERVER_URL
-);
-
 export function RoomProvider({ children }) {
+  const ws = useMemo(() => {
+    return io(process.env.NEXT_PUBLIC_SERVER_URL);
+  }, []);
+  console.log(
+    'connecting with server in URL: ',
+    process.env.NEXT_PUBLIC_SERVER_URL
+  );
+
+  console.log('ws', ws);
+
   const [myPeer, setMyPeer] = useState<PeerObj>();
 
   const [isSharing, setIsSharing] = useState<boolean>(false);
@@ -56,6 +61,8 @@ export function RoomProvider({ children }) {
 
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
   const [allUsers, setAllUsers] = useState<Array<IUser>>([]);
+
+  console.log('peers', peers);
 
   const getUsers = users => {
     console.log('all users in the room ', users);

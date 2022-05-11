@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { v1 as uuid } from 'uuid';
 import * as S from './styles';
 import { PeerState } from '../../../interfaces';
 import { useRoom } from '../../../contexts';
@@ -12,6 +13,11 @@ export function StreamMedia({ socket }) {
   const { ...peersToShow } = peers;
 
   const [userSharingId, setUserSharingId] = useState();
+
+  // const peerArr = new Array(6).fill({
+  //   peerId: uuid(),
+  //   stream: new MediaStream(),
+  // });
 
   useEffect(() => {
     socket.on('sharer', data => {
@@ -31,6 +37,13 @@ export function StreamMedia({ socket }) {
             peerId={peer.id}
           />
         ))}
+        {/* {peerArr.map(peer => (
+          <PeerCard
+            stream={peer.stream}
+            isSharing={peer.id === userSharingId}
+            peerId={peer.id}
+          />
+        ))} */}
       </S.MediaContent>
       <UserOptions />
     </S.StreamArea>

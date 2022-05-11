@@ -18,12 +18,15 @@ export const StreamArea = styled.main`
 `;
 
 export const MediaContent = styled.main`
-  display: flex;
+  /* display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   overflow: hidden;
-  gap: 12px;
+  gap: 12px; */
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
 `;
 
 export const Person = styled.div`
