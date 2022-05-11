@@ -19,7 +19,7 @@ export function MyStreamCard() {
   }, [stream]);
 
   return (
-    <S.VideoContainer speaking={isSpeaking}>
+    <S.VideoContainer speaking={isSpeaking} isSharing={isSharing}>
       <video ref={myMedia} hidden={!isSharing} muted autoPlay />
       <S.UserCard speaking={isSpeaking} isSharing={isSharing}>
         <Image

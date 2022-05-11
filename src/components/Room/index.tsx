@@ -26,37 +26,37 @@ export function Room() {
     }
   }, [ws, stream, myPeer, router, roomId]);
 
-  useEffect(() => {
-    const openNotification = () => {
-      const inviteUrl = `${window.location.hostname}:${window.location.port}/invite/${roomId}`;
-      notification.info({
-        message: 'Convide outras pessoas!',
-        description: (
-          <>
-            <p>Envie o link da reunião com quem você quer que participe</p>
-            <Input.Group compact>
-              <Input
-                value={inviteUrl}
-                style={{ width: 'calc(100% - 40px)' }}
-                disabled
-              />
-              <Button
-                type="primary"
-                icon={<CopyOutlined />}
-                onClick={() => {
-                  navigator.clipboard.writeText(inviteUrl);
-                }}
-              />
-            </Input.Group>
-          </>
-        ),
-        placement: 'bottomLeft',
-      });
-    };
+  // useEffect(() => {
+  //   const openNotification = () => {
+  //     const inviteUrl = `${window.location.hostname}:${window.location.port}/invite/${roomId}`;
+  //     notification.info({
+  //       message: 'Convide outras pessoas!',
+  //       description: (
+  //         <>
+  //           <p>Envie o link da reunião com quem você quer que participe</p>
+  //           <Input.Group compact>
+  //             <Input
+  //               value={inviteUrl}
+  //               style={{ width: 'calc(100% - 40px)' }}
+  //               disabled
+  //             />
+  //             <Button
+  //               type="primary"
+  //               icon={<CopyOutlined />}
+  //               onClick={() => {
+  //                 navigator.clipboard.writeText(inviteUrl);
+  //               }}
+  //             />
+  //           </Input.Group>
+  //         </>
+  //       ),
+  //       placement: 'bottomLeft',
+  //     });
+  //   };
 
-    if (!roomId || !user) return;
-    openNotification();
-  }, [roomId, user]);
+  //   if (!roomId || !user) return;
+  //   openNotification();
+  // }, [roomId, user]);
 
   return (
     <S.Container>

@@ -2,6 +2,8 @@ import styled, { css } from 'styled-components';
 
 interface IVideoProps {
   speaking: number;
+  isSharing?: boolean;
+  isPeerSharing?: boolean;
 }
 
 interface IUserCard extends IVideoProps {
@@ -10,11 +12,12 @@ interface IUserCard extends IVideoProps {
 
 export const StreamArea = styled.main`
   width: 100%;
-  padding: 24px;
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 1.5rem;
 `;
 
 export const MediaContent = styled.main`
@@ -25,6 +28,7 @@ export const MediaContent = styled.main`
   overflow: hidden;
   gap: 12px; */
   width: 100%;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
 `;
@@ -63,6 +67,59 @@ export const VideoContainer = styled.div<IVideoProps>`
   text-align: center;
   box-shadow: ${({ speaking }) =>
     speaking > 0 ? `0 0 ${speaking}px ${speaking}px #ff5252` : ''};
+
+  ${({ isSharing }) =>
+    isSharing &&
+    css`
+      width: 100%;
+      height: 100%;
+    `};
+
+  video {
+    width: 480px;
+    height: 360px;
+    object-fit: cover;
+    text-align: center;
+
+    ${({ isSharing }) =>
+      isSharing &&
+      css`
+        width: 100%;
+        height: 100%;
+      `};
+  }
+
+  h1 {
+    color: #fff;
+  }
+`;
+
+export const PeerVideoContainer = styled.div<IVideoProps>`
+  position: relative;
+  margin: 12px;
+  width: 480px;
+  height: 360px;
+  flex: 1 1 80px;
+  display: flex;
+  flex-direction: column;
+
+  background: #333;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+  align-items: center;
+  color: '#FFF';
+  object-fit: fill;
+  text-align: center;
+  box-shadow: ${({ speaking }) =>
+    speaking > 0 ? `0 0 ${speaking}px ${speaking}px #ff5252` : ''};
+
+  ${({ isSharing }) =>
+    isSharing &&
+    css`
+      display: none;
+    `};
 
   video {
     width: 480px;

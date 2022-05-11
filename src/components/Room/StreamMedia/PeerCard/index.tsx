@@ -6,7 +6,7 @@ import * as S from '../styles';
 
 export function PeerCard({
   stream,
-  isSharing,
+  isSharing: isPeerSharing,
   peerId,
 }: {
   stream: MediaStream;
@@ -16,7 +16,7 @@ export function PeerCard({
   const [isSpeaking, setIsSpeaking] = useState<number>();
   const videoStream = useRef<HTMLVideoElement>();
 
-  const { allUsers } = useRoom();
+  const { allUsers, isSharing } = useRoom();
 
   console.log('all users here: ', allUsers);
   console.log(
@@ -34,10 +34,14 @@ export function PeerCard({
   }, [stream]);
 
   return (
-    <S.VideoContainer speaking={isSpeaking}>
+    <S.PeerVideoContainer
+      speaking={isSpeaking}
+      isSharing={isSharing}
+      isPeerSharing={isPeerSharing}
+    >
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <video ref={videoStream} hidden={!isSharing} autoPlay />
-      <S.UserCard speaking={isSpeaking} isSharing={isSharing}>
+      <video ref={videoStream} hidden={!isPeerSharing} autoPlay />
+      <S.UserCard speaking={isSpeaking} isSharing={isPeerSharing}>
         <Image
           src={
             allUsers.find(u => u.peerId === peerId).image ??
@@ -51,6 +55,6 @@ export function PeerCard({
       <S.NameContainer>
         {allUsers.find(u => u.peerId === peerId).name}
       </S.NameContainer>
-    </S.VideoContainer>
+    </S.PeerVideoContainer>
   );
 }
