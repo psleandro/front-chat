@@ -75,6 +75,12 @@ export const VideoContainer = styled.div<IVideoProps>`
       height: 100%;
     `};
 
+  ${({ isPeerSharing }) =>
+    isPeerSharing &&
+    css`
+      display: none;
+    `};
+
   video {
     width: 480px;
     height: 360px;
@@ -121,11 +127,25 @@ export const PeerVideoContainer = styled.div<IVideoProps>`
       display: none;
     `};
 
+  ${({ isPeerSharing }) =>
+    isPeerSharing &&
+    css`
+      width: 100%;
+      height: 100%;
+    `};
+
   video {
     width: 480px;
     height: 360px;
     object-fit: cover;
     text-align: center;
+
+    ${({ isPeerSharing }) =>
+      isPeerSharing &&
+      css`
+        width: 100%;
+        height: 100%;
+      `};
   }
 
   h1 {

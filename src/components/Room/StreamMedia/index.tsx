@@ -29,7 +29,7 @@ export function StreamMedia({ socket }) {
   return (
     <S.StreamArea>
       <S.MediaContent>
-        <MyStreamCard />
+        <MyStreamCard peerSharing={userSharingId} />
         {Object.values(peersToShow as PeerState).map(peer => (
           <PeerCard
             stream={peer.stream}

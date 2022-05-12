@@ -4,8 +4,8 @@ import { useAuth, useRoom } from '../../../../contexts';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
 
-export function MyStreamCard() {
-  const { stream, isSharing } = useRoom();
+export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
+  const { stream, isSharing, myPeer } = useRoom();
   const { user } = useAuth();
 
   const [isSpeaking, setIsSpeaking] = useState<number>();
@@ -19,7 +19,11 @@ export function MyStreamCard() {
   }, [stream]);
 
   return (
-    <S.VideoContainer speaking={isSpeaking} isSharing={isSharing}>
+    <S.VideoContainer
+      speaking={isSpeaking}
+      isSharing={isSharing}
+      isPeerSharing={!!peerSharing && myPeer?.id !== peerSharing}
+    >
       <video ref={myMedia} hidden={!isSharing} muted autoPlay />
       <S.UserCard speaking={isSpeaking} isSharing={isSharing}>
         <Image
