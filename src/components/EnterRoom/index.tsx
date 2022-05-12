@@ -51,17 +51,3 @@ export function EnterRoom() {
     </S.Column>
   );
 }
-
-export async function getServerSideProps(context) {
-  const session = await getSession(context);
-  if (!session) {
-    context.res.writeHead(302, { Location: '/' });
-    context.res.end();
-    return {};
-  }
-  return {
-    props: {
-      user: session.user,
-    },
-  };
-}
