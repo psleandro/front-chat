@@ -11,7 +11,7 @@ import { useRoom } from '../../contexts';
 export function InviteRoom() {
   const [name, setName] = useState('');
 
-  const { signIn } = useAuth();
+  // const { signIn } = useAuth();
   const { ws } = useRoom();
   const router = useRouter();
 
@@ -25,7 +25,7 @@ export function InviteRoom() {
       username: name,
       color,
     };
-    signIn(user);
+    // signIn(user);
     router.push(`/room/${toRoomID}`);
   };
 

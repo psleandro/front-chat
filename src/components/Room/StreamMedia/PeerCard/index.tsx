@@ -18,12 +18,6 @@ export function PeerCard({
 
   const { allUsers, isSharing } = useRoom();
 
-  console.log('all users here: ', allUsers);
-  console.log(
-    'the user: ',
-    allUsers.find(u => u.peerId === peerId)
-  );
-
   useEffect(() => {
     if (!videoStream.current && !stream) return;
 

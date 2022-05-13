@@ -8,6 +8,7 @@ export interface createUserDto {
 
 export interface IPeerData {
   peerId: string;
+  username?: string;
 }
 
 export interface IUser {

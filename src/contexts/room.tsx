@@ -60,7 +60,7 @@ export function RoomProvider({ children }) {
   const [stream, setStream] = useState<MediaStream>();
 
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
-  const [allUsers, setAllUsers] = useState<Array<IUser>>([]);
+  const [allUsers, setAllUsers] = useState<Array<IUserDto>>([]);
 
   console.log('peers', peers);
 
