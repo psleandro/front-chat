@@ -52,15 +52,13 @@ export function RoomProvider({ children }) {
     process.env.NEXT_PUBLIC_SERVER_URL
   );
 
-  console.log('ws', ws);
-
   const [myPeer, setMyPeer] = useState<PeerObj>();
 
   const [isSharing, setIsSharing] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream>();
 
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
-  const [allUsers, setAllUsers] = useState<Array<IUser>>([]);
+  const [allUsers, setAllUsers] = useState<Array<IUserDto>>([]);
 
   console.log('peers', peers);
 
