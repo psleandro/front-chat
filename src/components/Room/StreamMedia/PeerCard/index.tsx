@@ -8,10 +8,12 @@ export function PeerCard({
   stream,
   isSharing: isPeerSharing,
   peerId,
+  peerSharing,
 }: {
   stream: MediaStream;
   isSharing: boolean;
   peerId: string;
+  peerSharing: string;
 }) {
   const [isSpeaking, setIsSpeaking] = useState<number>();
   const videoStream = useRef<HTMLVideoElement>();
@@ -32,6 +34,9 @@ export function PeerCard({
       speaking={isSpeaking}
       isSharing={isSharing}
       isPeerSharing={isPeerSharing}
+      className={
+        !!peerSharing && !isPeerSharing && peerId !== peerSharing && 'hide'
+      }
     >
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video ref={videoStream} hidden={!isPeerSharing} autoPlay />

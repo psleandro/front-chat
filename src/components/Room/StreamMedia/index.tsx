@@ -35,6 +35,7 @@ export function StreamMedia({ socket }) {
             stream={peer.stream}
             isSharing={peer.id === userSharingId}
             peerId={peer.id}
+            peerSharing={userSharingId}
           />
         ))}
         {/* {peerArr.map(peer => (
