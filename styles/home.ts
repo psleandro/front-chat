@@ -7,6 +7,12 @@ export const Main = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 export const SignInButton = styled.button`
@@ -31,5 +37,52 @@ export const SignInButton = styled.button`
       color: #fff;
       margin: 0;
     }
+  }
+`;
+
+export const SignInWithGoogleButton = styled.button`
+  padding: 1rem;
+  border-radius: 0.8rem;
+  font-weight: 500;
+  background: #ea4335;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+
+  cursor: pointer;
+
+  border: 0;
+
+  transition: filter 0.3s;
+
+  &:hover {
+    filter: brightness(0.9);
+  }
+`;
+
+export const SignInWithMicrosoftButton = styled.button`
+  padding: 1rem;
+  border-radius: 0.8rem;
+  font-weight: 500;
+  background: #fff;
+  color: #00a1f1;
+  border: 1px solid #00a1f1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+
+  cursor: pointer;
+
+  transition: all 0.3s;
+
+  &:hover {
+    color: #fff;
+    border: 1px solid #fff;
+    background: #00a1f1;
   }
 `;

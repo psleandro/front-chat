@@ -1,4 +1,5 @@
 /* eslint-disable global-require */
+import { useRouter } from 'next/router';
 import * as PeerObj from 'peerjs';
 import {
   createContext,
@@ -51,6 +52,10 @@ export function RoomProvider({ children }) {
     'connecting with server in URL: ',
     process.env.NEXT_PUBLIC_SERVER_URL
   );
+
+  const router = useRouter();
+
+  const { roomId } = router.query;
 
   console.log('ws', ws);
 
@@ -172,6 +177,7 @@ export function RoomProvider({ children }) {
     if (!stream) return;
 
     ws.on('user-joined', (user: IUserDto) => {
+      ws.emit('verifySharer', roomId);
       console.log('user joined in room: ', user);
       setAllUsers(v => [...v, user]);
       const call = myPeer.call(user.peerId, stream, {

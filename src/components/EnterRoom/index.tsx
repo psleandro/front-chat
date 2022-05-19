@@ -1,12 +1,12 @@
 import { FaSignOutAlt } from 'react-icons/fa';
 import { v4 as newUuid } from 'uuid';
 import { useRouter } from 'next/router';
-import { getSession, useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import * as S from './styles';
+import { useAuth } from '../../contexts';
 
 export function EnterRoom() {
-  const { data: session } = useSession();
+  const { user, handleSignOut } = useAuth();
 
   const router = useRouter();
 
@@ -23,27 +23,23 @@ export function EnterRoom() {
     <S.Column>
       <S.Avatar>
         <Image
-          src={session.user?.image || '/avatar/default-1.png'}
-          alt={session.user?.name}
+          src={user?.image || '/avatar/default-1.png'}
+          alt={user?.name}
           width={200}
           height={200}
         />
       </S.Avatar>
       <S.Row>
-        <h3>{session.user?.name}</h3>
+        <h3>{user?.name}</h3>
         <S.Logout>
-          <FaSignOutAlt onClick={() => signOut()} />
+          <FaSignOutAlt onClick={handleSignOut} />
         </S.Logout>
       </S.Row>
       <S.Row>
         <S.Button
           onClick={() => createMeet()}
-          disabled={
-            !!(session.user?.name === undefined || session.user?.name === '')
-          }
-          locked={
-            !!(session.user?.name === undefined || session.user?.name === '')
-          }
+          disabled={!!(user?.name === undefined || user?.name === '')}
+          locked={!!(user?.name === undefined || user?.name === '')}
         >
           Criar Sala
         </S.Button>

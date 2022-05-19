@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { v1 as uuid } from 'uuid';
 import * as S from './styles';
 import { PeerState } from '../../../interfaces';
@@ -12,6 +13,10 @@ export function StreamMedia({ socket }) {
 
   const { ...peersToShow } = peers;
 
+  const router = useRouter();
+
+  const { roomId } = router.query;
+
   const [userSharingId, setUserSharingId] = useState();
 
   // const peerArr = new Array(6).fill({
@@ -20,6 +25,7 @@ export function StreamMedia({ socket }) {
   // });
 
   useEffect(() => {
+    // socket.emit('verifySharer', roomId);
     socket.on('sharer', data => {
       if (data.sharing) setUserSharingId(data.sharerId);
       else setUserSharingId(undefined);

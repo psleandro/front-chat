@@ -14,8 +14,6 @@ export interface IPeerData {
 export interface IUser {
   userId: string;
   socketId?: string;
-  // username: string;
-  // color: string;
   name?: string;
   email?: string;
   image?: string;
@@ -25,6 +23,9 @@ export interface IUserDto extends IUser, IPeerData {}
 
 export interface AuthContextData {
   user: IUser;
+  signInWithGoogle: () => Promise<void>;
+  signInWithMicrosoft: () => Promise<void>;
+  handleSignOut: () => Promise<void>;
 }
 
 export interface AuthProviderProps {

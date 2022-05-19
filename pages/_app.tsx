@@ -4,20 +4,19 @@ import ptBR from 'antd/lib/locale/pt_BR';
 
 import { ConfigProvider } from 'antd';
 import type { AppProps } from 'next/app';
-import { SessionProvider } from 'next-auth/react';
 import { AuthProvider } from '../src/contexts/auth';
 import { RoomProvider } from '../src/contexts';
+
+import '../src/services/firebase';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ConfigProvider locale={ptBR}>
-      <SessionProvider session={pageProps.session}>
-        <AuthProvider>
-          <RoomProvider>
-            <Component {...pageProps} />
-          </RoomProvider>
-        </AuthProvider>
-      </SessionProvider>
+      <AuthProvider>
+        <RoomProvider>
+          <Component {...pageProps} />
+        </RoomProvider>
+      </AuthProvider>
     </ConfigProvider>
   );
 }
