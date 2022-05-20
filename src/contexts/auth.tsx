@@ -134,6 +134,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     destroyCookie(undefined, '@audio-meet/accessToken', {
       path: '/',
     });
+    destroyCookie(undefined, '@audio-meet/microsoftOAuthToken', {
+      path: '/',
+    });
   }
 
   useEffect(() => {
@@ -212,6 +215,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       } else {
         setUser(undefined);
         destroyCookie(undefined, '@audio-meet/accessToken', {
+          path: '/',
+        });
+        destroyCookie(undefined, '@audio-meet/microsoftOAuthToken', {
           path: '/',
         });
       }
