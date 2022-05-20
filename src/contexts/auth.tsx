@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { destroyCookie, setCookie } from 'nookies';
 import { AuthContextData, AuthProviderProps, IUser } from '../interfaces';
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -36,6 +37,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
           email,
           provider: response.providerId,
         });
+
+        setCookie(
+          undefined,
+          '@audio-meet/accessToken',
+          // eslint-disable-next-line dot-notation
+          response.user['accessToken'],
+          {
+            path: '/',
+            maxAge: 60 * 60, // 1h,
+          }
+        );
       }
     } catch (e) {
       console.log(e);
@@ -60,6 +72,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
           name: displayName,
           provider: response.providerId,
         });
+
+        setCookie(
+          undefined,
+          '@audio-meet/accessToken',
+          // eslint-disable-next-line dot-notation
+          response.user['accessToken'],
+          {
+            path: '/',
+            maxAge: 60 * 60, // 1h,
+          }
+        );
       }
 
       const photo = await axios.get(
@@ -95,6 +118,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function handleSignOut() {
     await signOut(auth);
+    destroyCookie(undefined, '@audio-meet/accessToken', {
+      path: '/',
+    });
   }
 
   useEffect(() => {
@@ -110,10 +136,25 @@ export function AuthProvider({ children }: AuthProviderProps) {
           userId: uid,
           name: displayName,
           image: photoURL,
-          provider: userResponse.providerId,
+          // eslint-disable-next-line dot-notation
+          provider: userResponse.providerData[0]['providerId'],
         });
+
+        setCookie(
+          undefined,
+          '@audio-meet/accessToken',
+          // eslint-disable-next-line dot-notation
+          userResponse['accessToken'],
+          {
+            path: '/',
+            maxAge: 60 * 60, // 1h,
+          }
+        );
       } else {
         setUser(undefined);
+        destroyCookie(undefined, '@audio-meet/accessToken', {
+          path: '/',
+        });
       }
     });
 
