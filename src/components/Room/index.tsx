@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Input, notification } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
@@ -9,22 +9,25 @@ import { StreamMedia } from './StreamMedia';
 export function Room() {
   const { user } = useAuth();
   const { ws, myPeer, stream } = useRoom();
+  const [okay, setOkay] = useState(0);
   const router = useRouter();
 
   const { roomId } = router.query;
 
   useEffect(() => {
+    if (okay === 1) return;
     // if (!user) {
     //   router.push('/');
     //   return;
     // }
 
-    if (myPeer && stream) {
+    if (user && myPeer && stream) {
       // eslint-disable-next-line no-underscore-dangle
       ws.emit('join-room', roomId, { ...user, peerId: myPeer._id });
       console.log('user joinedddddddddddd');
+      setOkay(1);
     }
-  }, [ws, stream, myPeer, router, roomId]);
+  }, [user, ws, stream, myPeer, router, roomId]);
 
   // useEffect(() => {
   //   const openNotification = () => {

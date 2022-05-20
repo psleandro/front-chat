@@ -148,18 +148,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
           throw new Error('Missing information from Provider');
         }
 
-        setUser({
+        const userInfo = {
           userId: uid,
           name: displayName,
           provider: userResponse.providerData[0]['providerId'],
-          image: '/avatar/default-1.png',
-        });
+        };
 
         if (userResponse.providerData[0]['providerId'] === 'google.com') {
-          setUser(value => ({
-            ...value,
-            image: photoURL,
-          }));
+          Object.assign(userInfo, { image: photoURL });
+          setUser(userInfo);
 
           setCookie(
             undefined,
@@ -189,10 +186,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
           const avatar = Buffer.from(photo.data, 'binary').toString('base64');
 
-          setUser(value => ({
-            ...value,
-            image: avatar,
-          }));
+          Object.assign(userInfo, { image: avatar });
+          setUser(userInfo);
 
           setCookie(
             undefined,
@@ -208,7 +203,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           if ((e.response.status = 404)) {
             setUser(value => ({
               ...value,
-              image: '',
+              image: null,
             }));
           }
           console.log(e);

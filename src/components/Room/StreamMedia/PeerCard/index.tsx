@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { useRoom } from '../../../../contexts';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
@@ -29,6 +29,17 @@ export function PeerCard({
     }
   }, [stream]);
 
+  const userImgPath = useMemo(() => {
+    const user = allUsers.find(u => u.peerId === peerId);
+    if (user?.provider === 'google.com') {
+      return user?.image;
+    }
+    if (user?.provider === 'microsoft.com')
+      return `data:image/jpeg;base64,${user?.image}`;
+
+    return '/avatar/default-1.png';
+  }, [allUsers, peerId]);
+
   return (
     <S.PeerVideoContainer
       speaking={isSpeaking}
@@ -41,15 +52,7 @@ export function PeerCard({
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video ref={videoStream} hidden={!isPeerSharing} autoPlay />
       <S.UserCard speaking={isSpeaking} isSharing={isPeerSharing}>
-        <Image
-          src={
-            allUsers.find(u => u.peerId === peerId).image ??
-            '/avatar/default-1.png'
-          }
-          width={150}
-          height={150}
-          alt="avatar"
-        />
+        <Image src={userImgPath} width={150} height={150} alt="avatar" />
       </S.UserCard>
       <S.NameContainer>
         {allUsers.find(u => u.peerId === peerId).name}
