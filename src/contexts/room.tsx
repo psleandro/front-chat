@@ -48,16 +48,10 @@ export function RoomProvider({ children }) {
   const ws = useMemo(() => {
     return io(process.env.NEXT_PUBLIC_SERVER_URL);
   }, []);
-  console.log(
-    'connecting with server in URL: ',
-    process.env.NEXT_PUBLIC_SERVER_URL
-  );
 
   const router = useRouter();
 
   const { roomId } = router.query;
-
-  console.log('ws', ws);
 
   const [myPeer, setMyPeer] = useState<PeerObj>();
 

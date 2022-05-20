@@ -27,7 +27,14 @@ export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
       <video ref={myMedia} hidden={!isSharing} muted autoPlay />
       <S.UserCard speaking={isSpeaking} isSharing={isSharing}>
         <Image
-          src={user?.image ?? '/avatar/default-1.png'}
+          src={
+            // eslint-disable-next-line no-nested-ternary
+            user?.provider === 'google.com'
+              ? user?.image
+              : user?.image
+              ? `data:image/jpeg;base64,${user?.image}`
+              : '/avatar/default-1.png'
+          }
           width={150}
           height={150}
           alt="avatar"

@@ -152,6 +152,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           userId: uid,
           name: displayName,
           provider: userResponse.providerData[0]['providerId'],
+          image: '/avatar/default-1.png',
         });
 
         if (userResponse.providerData[0]['providerId'] === 'google.com') {
