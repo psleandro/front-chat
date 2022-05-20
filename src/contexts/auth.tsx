@@ -7,7 +7,6 @@ import {
   signOut,
 } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { v4 as newUuid } from 'uuid';
 import axios from 'axios';
 import { AuthContextData, AuthProviderProps, IUser } from '../interfaces';
 
@@ -22,6 +21,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const provider = new GoogleAuthProvider();
 
       const response = await signInWithPopup(auth, provider);
+
       if (response.user) {
         const { displayName, email, photoURL, uid } = response.user;
 
@@ -34,6 +34,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           name: displayName,
           image: photoURL,
           email,
+          provider: response.providerId,
         });
       }
     } catch (e) {
@@ -47,20 +48,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       const response = await signInWithPopup(auth, provider);
 
-      // const photo = await axios.get(
-      //   'https://graph.microsoft.com/v1.0/me/photos/48x48/$value',
-      //   {
-      //     headers: {
-      //       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      //       // @ts-ignore-line
-      //       // eslint-disable-next-line no-underscore-dangle
-      //       Authorization: `Bearer ${response._tokenResponse.oauthAccessToken}`,
-      //     },
-      //   }
-      // );
-
       if (response.user) {
-        const { displayName, uid, photoURL } = response.user;
+        const { displayName, uid } = response.user;
 
         if (!displayName) {
           throw new Error('Missing information from Microsoft');
@@ -69,10 +58,37 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setUser({
           userId: uid,
           name: displayName,
-          image: photoURL,
+          provider: response.providerId,
         });
       }
+
+      const photo = await axios.get(
+        'https://graph.microsoft.com/v1.0/me/photo/$value',
+        {
+          headers: {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore-line
+            // eslint-disable-next-line no-underscore-dangle
+            Authorization: `Bearer ${response._tokenResponse.oauthAccessToken}`,
+          },
+          responseType: 'arraybuffer',
+        }
+      );
+
+      const avatar = Buffer.from(photo.data, 'binary').toString('base64');
+
+      setUser(value => ({
+        ...value,
+        image: avatar,
+      }));
     } catch (e) {
+      // eslint-disable-next-line no-cond-assign, no-constant-condition
+      if ((e.response.status = 404)) {
+        setUser(value => ({
+          ...value,
+          image: '',
+        }));
+      }
       console.log(e);
     }
   }
@@ -86,14 +102,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (userResponse) {
         const { displayName, uid, photoURL } = userResponse;
 
-        if (!displayName || !photoURL) {
-          throw new Error('Missing information from Google');
+        if (!displayName) {
+          throw new Error('Missing information from Provider');
         }
 
         setUser({
           userId: uid,
           name: displayName,
           image: photoURL,
+          provider: userResponse.providerId,
         });
       } else {
         setUser(undefined);

@@ -23,11 +23,19 @@ export function EnterRoom() {
     <S.Column>
       <S.Avatar>
         <Image
-          src={user?.image || '/avatar/default-1.png'}
+          src={
+            // eslint-disable-next-line no-nested-ternary
+            user.provider === 'google.com'
+              ? user?.image
+              : user?.image
+              ? `data:image/jpeg;base64,${user?.image}`
+              : '/avatar/default-1.png'
+          }
           alt={user?.name}
           width={200}
           height={200}
         />
+        {/* <img src={`data:image/jpeg;base64,${user.image}`} alt="" /> */}
       </S.Avatar>
       <S.Row>
         <h3>{user?.name}</h3>
