@@ -151,7 +151,7 @@ export const PeerVideoContainer = styled.div<IVideoProps>`
     isPeerSharing &&
     css`
       width: 100%;
-      height: 100%;
+      height: calc(90vh);
     `};
 
   ${({ isPeerSharing }) =>
