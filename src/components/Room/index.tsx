@@ -24,7 +24,6 @@ export function Room() {
     if (user && myPeer && stream) {
       // eslint-disable-next-line no-underscore-dangle
       ws.emit('join-room', roomId, { ...user, peerId: myPeer._id });
-      console.log('user joinedddddddddddd');
       setOkay(1);
     }
   }, [user, ws, stream, myPeer, router, roomId]);

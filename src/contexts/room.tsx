@@ -61,10 +61,7 @@ export function RoomProvider({ children }) {
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
   const [allUsers, setAllUsers] = useState<Array<IUserDto>>([]);
 
-  console.log('peers', peers);
-
   const getUsers = users => {
-    console.log('all users in the room ', users);
     setAllUsers(users);
     dispatchPeers({ type: 'ADD_ALL_PEERS', payload: { peers: users } });
   };
@@ -172,14 +169,12 @@ export function RoomProvider({ children }) {
 
     ws.on('user-joined', (user: IUserDto) => {
       ws.emit('verifySharer', roomId);
-      console.log('user joined in room: ', user);
       setAllUsers(v => [...v, user]);
       const call = myPeer.call(user.peerId, stream, {
         metadata: { username: user.username },
       });
 
       call.on('stream', remotePeerStream => {
-        console.log('other peer receiving stream: ', user.username);
         dispatchPeers({
           type: 'ADD_PEER_STREAM',
           payload: {
@@ -196,7 +191,6 @@ export function RoomProvider({ children }) {
       call.answer(stream);
 
       call.on('stream', remotePeerStream => {
-        console.log('my peer recieving stream: ', remotePeerStream);
         dispatchPeers({
           type: 'ADD_PEER_STREAM',
           payload: { peerId: call.peer, stream: remotePeerStream, username },
