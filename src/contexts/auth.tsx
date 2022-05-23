@@ -10,6 +10,7 @@ import {
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
+import { useRouter } from 'next/router';
 import { AuthContextData, AuthProviderProps, IUser } from '../interfaces';
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -17,6 +18,11 @@ export const AuthContext = createContext({} as AuthContextData);
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IUser>();
   const auth = getAuth();
+
+  const router = useRouter();
+
+  const cookies = parseCookies(undefined);
+  const previousPath = cookies['@audio-meet/previousPath'];
 
   async function signInWithGoogle() {
     try {
@@ -49,6 +55,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
             maxAge: 60 * 60, // 1h,
           }
         );
+
+        if (previousPath) {
+          router.push(
+            `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${previousPath}`
+          );
+
+          destroyCookie(undefined, '@audio-meet/previousPath', {
+            path: '/',
+          });
+        }
       }
     } catch (e) {
       console.log(e);
@@ -96,6 +112,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
             maxAge: 60 * 60, // 1h,
           }
         );
+
+        if (previousPath) {
+          router.push(
+            `${process.env.NEXT_PUBLIC_FRONTEND_URL}/${previousPath}`
+          );
+
+          destroyCookie(undefined, '@audio-meet/previousPath', {
+            path: '/',
+          });
+        }
       }
 
       const photo = await axios.get(
@@ -170,7 +196,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
           return;
         }
 
-        const cookies = parseCookies(undefined);
         const oAuthCookie = cookies['@audio-meet/microsoftOAuthToken'];
 
         try {

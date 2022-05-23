@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
-import { RoomContextData, IUser, IUserDto, PeerState } from '../interfaces';
+import { RoomContextData, IUserDto, PeerState } from '../interfaces';
 
 const peersReducer = (state: PeerState, action) => {
   if (action.type === 'ADD_PEER_STREAM') {

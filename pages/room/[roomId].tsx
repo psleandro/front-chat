@@ -1,9 +1,9 @@
-import { parseCookies } from 'nookies';
+import { parseCookies, setCookie } from 'nookies';
 import { Room as RoomComponent } from '../../src/components/Room';
 import { firebaseAdmin } from '../../src/services/firebaseAdmin';
 
-function Room() {
-  return <RoomComponent />;
+function Room({ previousPath }: { previousPath: string }) {
+  return <RoomComponent previousPath={previousPath} />;
 }
 
 export default Room;
@@ -21,9 +21,13 @@ export async function getServerSideProps(ctx) {
       return {};
     }
   } else {
+    setCookie(ctx, '@audio-meet/previousPath', ctx.req.url, {
+      path: '/',
+      maxAge: 60 * 60, // 1h,
+    });
+
     ctx.res.writeHead(302, { Location: '/' });
     ctx.res.end();
-    return {};
   }
 
   return {
