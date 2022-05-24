@@ -2,8 +2,8 @@ import { parseCookies, setCookie } from 'nookies';
 import { Room as RoomComponent } from '../../src/components/Room';
 import { firebaseAdmin } from '../../src/services/firebaseAdmin';
 
-function Room({ previousPath }: { previousPath: string }) {
-  return <RoomComponent previousPath={previousPath} />;
+function Room() {
+  return <RoomComponent />;
 }
 
 export default Room;

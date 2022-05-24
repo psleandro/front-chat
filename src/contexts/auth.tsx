@@ -43,6 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           image: photoURL,
           email,
           provider: response.providerId,
+          muted: false,
         });
 
         setCookie(
@@ -88,6 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           userId: uid,
           name: displayName,
           provider: response.providerId,
+          muted: false,
         });
 
         setCookie(
@@ -178,6 +180,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           userId: uid,
           name: displayName,
           provider: userResponse.providerData[0]['providerId'],
+          muted: false,
         };
 
         if (userResponse.providerData[0]['providerId'] === 'google.com') {
@@ -256,6 +259,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         signInWithGoogle,
         signInWithMicrosoft,
         handleSignOut,
+        setUser,
       }}
     >
       {children}

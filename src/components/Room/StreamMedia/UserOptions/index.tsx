@@ -7,19 +7,30 @@ import {
 } from '@ant-design/icons';
 import { ImPhoneHangUp } from 'react-icons/im';
 import { useRouter } from 'next/router';
-import { useRoom } from '../../../../contexts';
+import { useAuth, useRoom } from '../../../../contexts';
 import * as S from '../styles';
 
 export function UserOptions() {
-  const [muted, setMuted] = useState<boolean>(false);
-  const { isSharing, toggleMicrophone, switchStreamToScreen, ws, myPeer } =
-    useRoom();
+  const {
+    isSharing,
+    toggleMicrophone,
+    switchStreamToScreen,
+    ws,
+    handleMuteMicrophone,
+    isMicrophoneMuted,
+  } = useRoom();
+
+  const { setUser } = useAuth();
 
   const router = useRouter();
 
   const handleToggleMicrophone = () => {
     toggleMicrophone();
-    setMuted(v => !v);
+    handleMuteMicrophone();
+    setUser(prev => ({
+      ...prev,
+      muted: !prev.muted,
+    }));
   };
 
   const disconnectRoom = () => {
@@ -33,11 +44,11 @@ export function UserOptions() {
       <Button
         size="large"
         shape="circle"
-        danger={muted}
-        type={muted ? 'primary' : 'default'}
+        danger={isMicrophoneMuted}
+        type={isMicrophoneMuted ? 'primary' : 'default'}
         onClick={() => handleToggleMicrophone()}
       >
-        {muted ? <AudioMutedOutlined /> : <AudioOutlined />}
+        {isMicrophoneMuted ? <AudioMutedOutlined /> : <AudioOutlined />}
       </Button>
       <Button
         size="large"

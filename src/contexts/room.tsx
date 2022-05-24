@@ -56,6 +56,7 @@ export function RoomProvider({ children }) {
   const [myPeer, setMyPeer] = useState<PeerObj>();
 
   const [isSharing, setIsSharing] = useState<boolean>(false);
+  const [isMicrophoneMuted, setIsMicrophoneMuted] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream>();
 
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
@@ -76,6 +77,10 @@ export function RoomProvider({ children }) {
       .getTracks()
       .find(t => t.kind === 'audio').enabled;
     setStream(newStream);
+  };
+
+  const handleMuteMicrophone = () => {
+    setIsMicrophoneMuted(prev => !prev);
   };
 
   const switchStreamToScreen = async () => {
@@ -169,7 +174,17 @@ export function RoomProvider({ children }) {
 
     ws.on('user-joined', (user: IUserDto) => {
       ws.emit('verifySharer', roomId);
-      setAllUsers(v => [...v, user]);
+      const userExists = allUsers.find(usr => usr.userId === user.userId);
+      if (userExists) {
+        const users = allUsers.map(usr =>
+          usr.userId === user.userId ? user : usr
+        );
+
+        setAllUsers(users);
+      } else {
+        setAllUsers(v => [...v, user]);
+      }
+
       const call = myPeer.call(user.peerId, stream, {
         metadata: { username: user.username },
       });
@@ -202,7 +217,7 @@ export function RoomProvider({ children }) {
     return () => {
       ws.off('user-joined');
     };
-  }, [myPeer, stream]);
+  }, [myPeer, stream, allUsers]);
 
   return (
     <RoomContext.Provider
@@ -215,6 +230,8 @@ export function RoomProvider({ children }) {
         isSharing,
         switchStreamToScreen,
         allUsers,
+        isMicrophoneMuted,
+        handleMuteMicrophone,
       }}
     >
       {children}

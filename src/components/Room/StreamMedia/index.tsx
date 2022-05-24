@@ -27,7 +27,7 @@ export function StreamMedia({ socket }) {
   useEffect(() => {
     // socket.emit('verifySharer', roomId);
     socket.on('sharer', data => {
-      if (data.sharing) setUserSharingId(data.sharerId);
+      if (data?.sharing) setUserSharingId(data.sharerId);
       else setUserSharingId(undefined);
     });
   }, [socket]);
@@ -38,6 +38,7 @@ export function StreamMedia({ socket }) {
         <MyStreamCard peerSharing={userSharingId} />
         {Object.values(peersToShow as PeerState).map(peer => (
           <PeerCard
+            key={peer.id}
             stream={peer.stream}
             isSharing={peer.id === userSharingId}
             peerId={peer.id}

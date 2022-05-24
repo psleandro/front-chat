@@ -18,6 +18,7 @@ export interface IUser {
   email?: string;
   image?: string;
   provider: string;
+  muted: boolean;
 }
 
 export interface IUserDto extends IUser, IPeerData {}
@@ -27,6 +28,7 @@ export interface AuthContextData {
   signInWithGoogle: () => Promise<void>;
   signInWithMicrosoft: () => Promise<void>;
   handleSignOut: () => Promise<void>;
+  setUser: React.Dispatch<React.SetStateAction<IUser>>;
 }
 
 export interface AuthProviderProps {

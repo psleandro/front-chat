@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState, useMemo } from 'react';
+import { AudioMutedOutlined } from '@ant-design/icons';
 import { useRoom } from '../../../../contexts';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
@@ -18,7 +19,7 @@ export function PeerCard({
   const [isSpeaking, setIsSpeaking] = useState<number>();
   const videoStream = useRef<HTMLVideoElement>();
 
-  const { allUsers, isSharing } = useRoom();
+  const { allUsers, isSharing, isMicrophoneMuted } = useRoom();
 
   useEffect(() => {
     if (!videoStream.current && !stream) return;
@@ -57,6 +58,10 @@ export function PeerCard({
       <S.NameContainer>
         {allUsers.find(u => u.peerId === peerId).name}
       </S.NameContainer>
+      {allUsers.filter(u => u.peerId === peerId)[
+        allUsers.filter(u => u.peerId === peerId).length - 1
+      ].muted && <AudioMutedOutlined />}
+      {/* {allUsers.find(u => u.peerId === peerId).muted && <AudioMutedOutlined />} */}
     </S.PeerVideoContainer>
   );
 }

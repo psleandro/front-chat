@@ -106,6 +106,13 @@ export const VideoContainer = styled.div<IVideoProps>`
   h1 {
     color: #fff;
   }
+
+  svg {
+    color: #fff;
+    position: absolute;
+    right: 5%;
+    top: 5%;
+  }
 `;
 
 export const PeerVideoContainer = styled.div<IVideoProps>`
@@ -176,6 +183,13 @@ export const PeerVideoContainer = styled.div<IVideoProps>`
 
   h1 {
     color: #fff;
+  }
+
+  svg {
+    color: #fff;
+    position: absolute;
+    right: 5%;
+    top: 5%;
   }
 `;
 

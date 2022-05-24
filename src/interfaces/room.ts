@@ -27,4 +27,6 @@ export interface RoomContextData {
   isSharing: boolean;
   switchStreamToScreen: () => void;
   allUsers: IUserDto[];
+  handleMuteMicrophone: () => void;
+  isMicrophoneMuted: boolean;
 }

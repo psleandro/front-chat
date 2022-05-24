@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { AudioMutedOutlined } from '@ant-design/icons';
 import { useAuth, useRoom } from '../../../../contexts';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
 
 export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
-  const { stream, isSharing, myPeer } = useRoom();
+  const { stream, isSharing, myPeer, isMicrophoneMuted } = useRoom();
   const { user } = useAuth();
 
   const [isSpeaking, setIsSpeaking] = useState<number>();
@@ -42,6 +43,7 @@ export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
       </S.UserCard>
 
       <S.NameContainer>Você</S.NameContainer>
+      {isMicrophoneMuted && <AudioMutedOutlined />}
     </S.VideoContainer>
   );
 }
