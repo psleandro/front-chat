@@ -53,7 +53,7 @@ export function StreamMedia({ socket }) {
           />
         ))} */}
       </S.MediaContent>
-      <UserOptions />
+      <UserOptions userSharing={userSharingId} />
     </S.StreamArea>
   );
 }

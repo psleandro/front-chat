@@ -250,7 +250,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => {
       unsubscribe();
     };
-  }, [auth]);
+  }, [auth, cookies]);
 
   return (
     <AuthContext.Provider

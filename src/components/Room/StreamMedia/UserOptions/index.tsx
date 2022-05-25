@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 import { useAuth, useRoom } from '../../../../contexts';
 import * as S from '../styles';
 
-export function UserOptions() {
+export function UserOptions({ userSharing }: { userSharing: string }) {
   const {
     isSharing,
     toggleMicrophone,
@@ -18,6 +18,7 @@ export function UserOptions() {
     ws,
     handleMuteMicrophone,
     isMicrophoneMuted,
+    myPeer,
   } = useRoom();
 
   const { setUser } = useAuth();
@@ -57,6 +58,7 @@ export function UserOptions() {
         danger={isSharing}
         type={isSharing ? 'primary' : 'default'}
         icon={<DesktopOutlined />}
+        disabled={userSharing && userSharing !== myPeer?.id}
       />
       <Button
         size="large"
