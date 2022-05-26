@@ -15,7 +15,7 @@ export function Room() {
   const { roomId } = router.query;
 
   useEffect(() => {
-    if (okay === 1) return;
+    // if (okay === 1) return;
     // if (!user) {
     //   router.push('/');
     //   return;

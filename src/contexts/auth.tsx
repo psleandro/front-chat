@@ -229,10 +229,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         } catch (e) {
           // eslint-disable-next-line no-cond-assign, no-constant-condition
           if ((e.response.status = 404)) {
-            setUser(value => ({
-              ...value,
-              image: null,
-            }));
+            Object.assign(userInfo, { image: null });
+            setUser(userInfo);
           }
           console.log(e);
         }
@@ -250,7 +248,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => {
       unsubscribe();
     };
-  }, [auth, cookies]);
+  }, [auth]);
 
   return (
     <AuthContext.Provider

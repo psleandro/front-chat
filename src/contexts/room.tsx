@@ -71,16 +71,17 @@ export function RoomProvider({ children }) {
     dispatchPeers({ type: 'REMOVE_PEER_STREAM', payload: { peerId } });
   };
 
+  const handleMuteMicrophone = () => {
+    setIsMicrophoneMuted(prev => !prev);
+  };
+
   const toggleMicrophone = () => {
+    handleMuteMicrophone();
     const newStream = stream;
     newStream.getTracks().find(t => t.kind === 'audio').enabled = !stream
       .getTracks()
       .find(t => t.kind === 'audio').enabled;
     setStream(newStream);
-  };
-
-  const handleMuteMicrophone = () => {
-    setIsMicrophoneMuted(prev => !prev);
   };
 
   const switchStreamToScreen = async () => {

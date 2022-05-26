@@ -35,7 +35,7 @@ export function PeerCard({
     if (user?.provider === 'google.com') {
       return user?.image;
     }
-    if (user?.provider === 'microsoft.com')
+    if (user?.provider === 'microsoft.com' && user?.image)
       return `data:image/jpeg;base64,${user?.image}`;
 
     return '/avatar/default-1.png';
@@ -56,7 +56,7 @@ export function PeerCard({
         <Image src={userImgPath} width={150} height={150} alt="avatar" />
       </S.UserCard>
       <S.NameContainer>
-        {allUsers.find(u => u.peerId === peerId).name}
+        {allUsers.find(u => u.peerId === peerId)?.name}
       </S.NameContainer>
       {allUsers.filter(u => u.peerId === peerId)[
         allUsers.filter(u => u.peerId === peerId).length - 1

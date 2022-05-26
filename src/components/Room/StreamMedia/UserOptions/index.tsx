@@ -16,7 +16,6 @@ export function UserOptions({ userSharing }: { userSharing: string }) {
     toggleMicrophone,
     switchStreamToScreen,
     ws,
-    handleMuteMicrophone,
     isMicrophoneMuted,
     myPeer,
   } = useRoom();
@@ -27,7 +26,6 @@ export function UserOptions({ userSharing }: { userSharing: string }) {
 
   const handleToggleMicrophone = () => {
     toggleMicrophone();
-    handleMuteMicrophone();
     setUser(prev => ({
       ...prev,
       muted: !prev.muted,
