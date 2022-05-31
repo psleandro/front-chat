@@ -76,7 +76,7 @@ export function RoomProvider({ children }) {
   };
 
   const toggleMicrophone = () => {
-    handleMuteMicrophone();
+    // handleMuteMicrophone();
     const newStream = stream;
     newStream.getTracks().find(t => t.kind === 'audio').enabled = !stream
       .getTracks()

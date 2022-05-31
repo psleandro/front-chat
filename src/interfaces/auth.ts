@@ -18,7 +18,7 @@ export interface IUser {
   email?: string;
   image?: string;
   provider: string;
-  muted: boolean;
+  // muted: boolean;
 }
 
 export interface IUserDto extends IUser, IPeerData {}

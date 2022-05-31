@@ -43,7 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           image: photoURL,
           email,
           provider: response.providerId,
-          muted: false,
+          // muted: false,
         });
 
         setCookie(
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           userId: uid,
           name: displayName,
           provider: response.providerId,
-          muted: false,
+          // muted: false,
         });
 
         setCookie(
@@ -180,7 +180,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           userId: uid,
           name: displayName,
           provider: userResponse.providerData[0]['providerId'],
-          muted: false,
+          // muted: false,
         };
 
         if (userResponse.providerData[0]['providerId'] === 'google.com') {

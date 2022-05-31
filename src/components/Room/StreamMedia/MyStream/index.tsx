@@ -43,7 +43,7 @@ export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
       </S.UserCard>
 
       <S.NameContainer>Você</S.NameContainer>
-      {isMicrophoneMuted && <AudioMutedOutlined />}
+      {/* {isMicrophoneMuted && <AudioMutedOutlined />} */}
     </S.VideoContainer>
   );
 }

@@ -58,9 +58,9 @@ export function PeerCard({
       <S.NameContainer>
         {allUsers.find(u => u.peerId === peerId)?.name}
       </S.NameContainer>
-      {allUsers.filter(u => u.peerId === peerId)[
+      {/* {allUsers.filter(u => u.peerId === peerId)[
         allUsers.filter(u => u.peerId === peerId).length - 1
-      ].muted && <AudioMutedOutlined />}
+      ].muted && <AudioMutedOutlined />} */}
       {/* {allUsers.find(u => u.peerId === peerId).muted && <AudioMutedOutlined />} */}
     </S.PeerVideoContainer>
   );

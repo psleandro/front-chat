@@ -11,6 +11,7 @@ import { useAuth, useRoom } from '../../../../contexts';
 import * as S from '../styles';
 
 export function UserOptions({ userSharing }: { userSharing: string }) {
+  const [muted, setMuted] = useState<boolean>(false);
   const {
     isSharing,
     toggleMicrophone,
@@ -26,10 +27,11 @@ export function UserOptions({ userSharing }: { userSharing: string }) {
 
   const handleToggleMicrophone = () => {
     toggleMicrophone();
-    setUser(prev => ({
-      ...prev,
-      muted: !prev.muted,
-    }));
+    setMuted(v => !v);
+    // setUser(prev => ({
+    //   ...prev,
+    //   muted: !prev.muted,
+    // }));
   };
 
   const disconnectRoom = () => {
@@ -43,11 +45,11 @@ export function UserOptions({ userSharing }: { userSharing: string }) {
       <Button
         size="large"
         shape="circle"
-        danger={isMicrophoneMuted}
-        type={isMicrophoneMuted ? 'primary' : 'default'}
+        danger={muted}
+        type={muted ? 'primary' : 'default'}
         onClick={() => handleToggleMicrophone()}
       >
-        {isMicrophoneMuted ? <AudioMutedOutlined /> : <AudioOutlined />}
+        {muted ? <AudioMutedOutlined /> : <AudioOutlined />}
       </Button>
       <Button
         size="large"

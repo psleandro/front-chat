@@ -15,7 +15,7 @@ export function Room() {
   const { roomId } = router.query;
 
   useEffect(() => {
-    // if (okay === 1) return;
+    if (okay === 1) return;
     // if (!user) {
     //   router.push('/');
     //   return;
@@ -24,9 +24,9 @@ export function Room() {
     if (user && myPeer && stream) {
       // eslint-disable-next-line no-underscore-dangle
       ws.emit('join-room', roomId, { ...user, peerId: myPeer._id });
-      // setOkay(1);
+      setOkay(1);
     }
-  }, [user, ws, stream, myPeer, router, roomId]);
+  }, [user, ws, stream, myPeer, router, roomId, okay]);
 
   // useEffect(() => {
   //   const openNotification = () => {
