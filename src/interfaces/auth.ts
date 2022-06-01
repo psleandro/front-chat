@@ -11,6 +11,11 @@ export interface IPeerData {
   username?: string;
 }
 
+export interface SignInCredentials {
+  email: string;
+  password: string;
+}
+
 export interface IUser {
   userId: string;
   socketId?: string;
@@ -29,6 +34,7 @@ export interface AuthContextData {
   signInWithMicrosoft: () => Promise<void>;
   handleSignOut: () => Promise<void>;
   setUser: React.Dispatch<React.SetStateAction<IUser>>;
+  signIn: (credentials: SignInCredentials) => Promise<void>;
 }
 
 export interface AuthProviderProps {

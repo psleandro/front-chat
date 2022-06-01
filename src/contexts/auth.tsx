@@ -5,13 +5,21 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   OAuthProvider,
-  signOut,
+  signOut as firebaseSignOut,
 } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
 import { useRouter } from 'next/router';
-import { AuthContextData, AuthProviderProps, IUser } from '../interfaces';
+import {
+  AuthContextData,
+  AuthProviderProps,
+  IUser,
+  SignInCredentials,
+} from '../interfaces';
+import { api } from '../services/api';
+import { clientGraph } from '../graphql/config';
+import { REVALIDATE_SIGNIN } from '../graphql';
 
 export const AuthContext = createContext({} as AuthContextData);
 
@@ -23,6 +31,43 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const cookies = parseCookies(undefined);
   const previousPath = cookies['@audio-meet/previousPath'];
+
+  async function signIn({ email, password }: SignInCredentials) {
+    try {
+      const response = await api.post('auth/signin', {
+        email,
+        password,
+      });
+
+      const { accessToken, user: userResponse } = response.data;
+
+      const userData = {
+        userId: userResponse.id,
+        provider: 'mesha',
+        name: userResponse.name,
+        email: userResponse.email,
+        image: '',
+        // isAdmin: userResponse.profiles_names.includes('ADMIN'),
+      };
+
+      api.defaults.headers.Authorization = `Bearer ${accessToken}`;
+
+      setUser(userData);
+
+      setCookie(undefined, '@audio-meet.token', accessToken, {
+        maxAge: 60 * 60, // 1h
+        path: '/',
+      });
+    } catch (e) {
+      // feedback.error(checkIfErrorIsProvidedFromDtoOrArray(e));
+      console.log(e);
+    }
+  }
+
+  async function signOut() {
+    destroyCookie(undefined, '@audio-meet.token', { path: '/' });
+    setUser(null);
+  }
 
   async function signInWithGoogle() {
     try {
@@ -158,7 +203,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function handleSignOut() {
-    await signOut(auth);
+    if (user.provider === 'mesha') {
+      await signOut();
+      return;
+    }
+    await firebaseSignOut(auth);
     destroyCookie(undefined, '@audio-meet/accessToken', {
       path: '/',
     });
@@ -250,6 +299,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
   }, [auth]);
 
+  useEffect(() => {
+    const { '@audio-meet.token': accessToken } = parseCookies();
+
+    if (accessToken) {
+      clientGraph
+        .request(REVALIDATE_SIGNIN)
+        .then(response => {
+          const userData = {
+            userId: response.revalidateSignIn.id,
+            provider: 'mesha',
+            name: response.revalidateSignIn.name,
+            email: response.revalidateSignIn.email,
+            image: '',
+            // isAdmin: userResponse.profiles_names.includes('ADMIN'),
+          };
+
+          setUser(userData);
+        })
+        .catch(() => {
+          destroyCookie(undefined, '@audio-meet.token', { path: '/' });
+        });
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -258,6 +331,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         signInWithMicrosoft,
         handleSignOut,
         setUser,
+        signIn,
       }}
     >
       {children}

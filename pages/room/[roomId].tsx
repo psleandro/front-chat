@@ -11,6 +11,13 @@ export default Room;
 export async function getServerSideProps(ctx) {
   const cookies = parseCookies(ctx);
   const accessToken = cookies['@audio-meet/accessToken'];
+  const meshaToken = cookies['@audio-meet.token'];
+
+  if (meshaToken) {
+    return {
+      props: {},
+    };
+  }
 
   if (accessToken) {
     const token = await firebaseAdmin.auth().verifyIdToken(accessToken);

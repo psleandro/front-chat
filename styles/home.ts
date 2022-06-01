@@ -1,12 +1,25 @@
 import styled from 'styled-components';
 
-export const Main = styled.main`
+export const Container = styled.main`
   height: 100vh;
-  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  background: #f2f5ff;
+
+  > div:nth-child(2) {
+    height: 420px;
+  }
+`;
+
+export const Main = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 24px 16px 24px 16px;
 
   > div {
     display: flex;

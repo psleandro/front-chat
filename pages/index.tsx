@@ -1,5 +1,7 @@
+import { Divider } from 'antd';
 import { FaGoogle, FaMicrosoft } from 'react-icons/fa';
 import { EnterRoom } from '../src/components/EnterRoom';
+import SignIn from '../src/components/SignIn';
 import { useAuth } from '../src/contexts';
 import * as S from '../styles/home';
 
@@ -19,27 +21,35 @@ function Home() {
   };
 
   return (
-    <S.Main>
+    <S.Container>
       {!user && (
-        <div>
-          <S.SignInWithGoogleButton
-            type="button"
-            onClick={handleSignInWithGoogle}
-          >
-            <FaGoogle />
-            Crie sua sala com Google
-          </S.SignInWithGoogleButton>
-          <S.SignInWithMicrosoftButton
-            type="button"
-            onClick={handleSignInWithMicrosoft}
-          >
-            <FaMicrosoft />
-            Crie sua sala com Microsoft
-          </S.SignInWithMicrosoftButton>
-        </div>
+        <>
+          <SignIn />
+          <Divider type="vertical" />
+        </>
       )}
-      {user && <EnterRoom />}
-    </S.Main>
+      <S.Main>
+        {!user && (
+          <div>
+            <S.SignInWithGoogleButton
+              type="button"
+              onClick={handleSignInWithGoogle}
+            >
+              <FaGoogle />
+              Crie sua sala com Google
+            </S.SignInWithGoogleButton>
+            <S.SignInWithMicrosoftButton
+              type="button"
+              onClick={handleSignInWithMicrosoft}
+            >
+              <FaMicrosoft />
+              Crie sua sala com Microsoft
+            </S.SignInWithMicrosoftButton>
+          </div>
+        )}
+        {user && <EnterRoom />}
+      </S.Main>
+    </S.Container>
   );
 }
 
