@@ -12,26 +12,14 @@ import * as S from '../styles';
 
 export function UserOptions({ userSharing }: { userSharing: string }) {
   const [muted, setMuted] = useState<boolean>(false);
-  const {
-    isSharing,
-    toggleMicrophone,
-    switchStreamToScreen,
-    ws,
-    isMicrophoneMuted,
-    myPeer,
-  } = useRoom();
-
-  const { setUser } = useAuth();
+  const { isSharing, toggleMicrophone, switchStreamToScreen, ws, myPeer } =
+    useRoom();
 
   const router = useRouter();
 
   const handleToggleMicrophone = () => {
     toggleMicrophone();
     setMuted(v => !v);
-    // setUser(prev => ({
-    //   ...prev,
-    //   muted: !prev.muted,
-    // }));
   };
 
   const disconnectRoom = () => {

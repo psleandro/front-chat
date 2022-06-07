@@ -19,7 +19,7 @@ export function PeerCard({
   const [isSpeaking, setIsSpeaking] = useState<number>();
   const videoStream = useRef<HTMLVideoElement>();
 
-  const { allUsers, isSharing, isMicrophoneMuted } = useRoom();
+  const { allUsers, isSharing, mutedUsers } = useRoom();
 
   useEffect(() => {
     if (!videoStream.current && !stream) return;
@@ -61,6 +61,7 @@ export function PeerCard({
       {/* {allUsers.filter(u => u.peerId === peerId)[
         allUsers.filter(u => u.peerId === peerId).length - 1
       ].muted && <AudioMutedOutlined />} */}
+      {mutedUsers.includes(peerId) && <AudioMutedOutlined />}
       {/* {allUsers.find(u => u.peerId === peerId).muted && <AudioMutedOutlined />} */}
     </S.PeerVideoContainer>
   );

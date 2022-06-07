@@ -6,7 +6,7 @@ import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
 
 export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
-  const { stream, isSharing, myPeer, isMicrophoneMuted } = useRoom();
+  const { stream, isSharing, myPeer, mutedUsers } = useRoom();
   const { user } = useAuth();
 
   const [isSpeaking, setIsSpeaking] = useState<number>();
@@ -43,6 +43,7 @@ export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
       </S.UserCard>
 
       <S.NameContainer>Você</S.NameContainer>
+      {mutedUsers.includes(myPeer?.id) && <AudioMutedOutlined />}
       {/* {isMicrophoneMuted && <AudioMutedOutlined />} */}
     </S.VideoContainer>
   );

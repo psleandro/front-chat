@@ -55,8 +55,9 @@ export function RoomProvider({ children }) {
 
   const [myPeer, setMyPeer] = useState<PeerObj>();
 
+  const [mutedUsers, setMutedUsers] = useState<string[]>([]);
+
   const [isSharing, setIsSharing] = useState<boolean>(false);
-  const [isMicrophoneMuted, setIsMicrophoneMuted] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream>();
 
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
@@ -71,17 +72,18 @@ export function RoomProvider({ children }) {
     dispatchPeers({ type: 'REMOVE_PEER_STREAM', payload: { peerId } });
   };
 
-  const handleMuteMicrophone = () => {
-    setIsMicrophoneMuted(prev => !prev);
+  const updateUsersMuted = (peerIds: string[]) => {
+    console.log('geted muted users', peerIds);
+    setMutedUsers(peerIds);
   };
 
   const toggleMicrophone = () => {
-    // handleMuteMicrophone();
     const newStream = stream;
     newStream.getTracks().find(t => t.kind === 'audio').enabled = !stream
       .getTracks()
       .find(t => t.kind === 'audio').enabled;
     setStream(newStream);
+    ws.emit('mute-microphone', roomId, myPeer.id);
   };
 
   const switchStreamToScreen = async () => {
@@ -158,12 +160,14 @@ export function RoomProvider({ children }) {
 
       ws.on('get-all-users-connected', getUsers);
       ws.on('user-disconnected', removePeer);
+      ws.on('update-users-muted', updateUsersMuted);
     }
 
     // eslint-disable-next-line consistent-return
     return () => {
       ws.off('get-all-users-connected');
       ws.off('user-disconnected');
+      ws.off('update-users-muted');
 
       myPeer?.disconnect();
     };
@@ -231,8 +235,7 @@ export function RoomProvider({ children }) {
         isSharing,
         switchStreamToScreen,
         allUsers,
-        isMicrophoneMuted,
-        handleMuteMicrophone,
+        mutedUsers,
       }}
     >
       {children}

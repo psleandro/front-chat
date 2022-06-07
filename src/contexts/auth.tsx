@@ -88,7 +88,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
           image: photoURL,
           email,
           provider: response.providerId,
-          // muted: false,
         });
 
         setCookie(
