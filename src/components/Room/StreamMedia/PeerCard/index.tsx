@@ -1,8 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { useEffect, useRef, useState, useMemo } from 'react';
 import { AudioMutedOutlined } from '@ant-design/icons';
-import { useRoom } from '../../../../contexts';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
+import { getImageUrl } from '../../../../utils/user';
+import { useRoom } from '../../../../contexts';
 import * as S from '../styles';
 
 export function PeerCard({
@@ -30,17 +31,6 @@ export function PeerCard({
     }
   }, [stream]);
 
-  const userImgPath = useMemo(() => {
-    const user = allUsers.find(u => u.peerId === peerId);
-    if (user?.provider === 'google.com') {
-      return user?.image;
-    }
-    if (user?.provider === 'microsoft.com' && user?.image)
-      return `data:image/jpeg;base64,${user?.image}`;
-
-    return '/avatar/default-1.png';
-  }, [allUsers, peerId]);
-
   return (
     <S.PeerVideoContainer
       speaking={isSpeaking}
@@ -53,16 +43,17 @@ export function PeerCard({
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
       <video ref={videoStream} hidden={!isPeerSharing} autoPlay />
       <S.UserCard speaking={isSpeaking} isSharing={isPeerSharing}>
-        <Image src={userImgPath} width={150} height={150} alt="avatar" />
+        <Image
+          src={getImageUrl(allUsers.find(u => u.peerId === peerId))}
+          width={150}
+          height={150}
+          alt="avatar"
+        />
       </S.UserCard>
       <S.NameContainer>
         {allUsers.find(u => u.peerId === peerId)?.name}
       </S.NameContainer>
-      {/* {allUsers.filter(u => u.peerId === peerId)[
-        allUsers.filter(u => u.peerId === peerId).length - 1
-      ].muted && <AudioMutedOutlined />} */}
       {mutedUsers.includes(peerId) && <AudioMutedOutlined />}
-      {/* {allUsers.find(u => u.peerId === peerId).muted && <AudioMutedOutlined />} */}
     </S.PeerVideoContainer>
   );
 }

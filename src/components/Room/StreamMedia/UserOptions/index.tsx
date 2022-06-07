@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 import { ImPhoneHangUp } from 'react-icons/im';
 import { useRouter } from 'next/router';
-import { useAuth, useRoom } from '../../../../contexts';
+import { useRoom } from '../../../../contexts';
 import * as S from '../styles';
 
 export function UserOptions({ userSharing }: { userSharing: string }) {

@@ -4,6 +4,7 @@ import { AudioMutedOutlined } from '@ant-design/icons';
 import { useAuth, useRoom } from '../../../../contexts';
 import { getMicrophoneFrquency } from '../../../../utils/audioContext';
 import * as S from '../styles';
+import { getImageUrl } from '../../../../utils/user';
 
 export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
   const { stream, isSharing, myPeer, mutedUsers } = useRoom();
@@ -27,24 +28,10 @@ export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
     >
       <video ref={myMedia} hidden={!isSharing} muted autoPlay />
       <S.UserCard speaking={isSpeaking} isSharing={isSharing}>
-        <Image
-          src={
-            // eslint-disable-next-line no-nested-ternary
-            user?.provider === 'google.com'
-              ? user?.image
-              : user?.image
-              ? `data:image/jpeg;base64,${user?.image}`
-              : '/avatar/default-1.png'
-          }
-          width={150}
-          height={150}
-          alt="avatar"
-        />
+        <Image src={getImageUrl(user)} width={150} height={150} alt="avatar" />
       </S.UserCard>
-
       <S.NameContainer>Você</S.NameContainer>
       {mutedUsers.includes(myPeer?.id) && <AudioMutedOutlined />}
-      {/* {isMicrophoneMuted && <AudioMutedOutlined />} */}
     </S.VideoContainer>
   );
 }
