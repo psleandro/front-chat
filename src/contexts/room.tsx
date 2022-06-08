@@ -96,6 +96,9 @@ export function RoomProvider({ children }) {
         ? await navigator.mediaDevices.getUserMedia(constraints)
         : await navigator.mediaDevices.getDisplayMedia(constraints);
 
+      const newVideoTrack = newStream.getTracks().find(t => t.kind === 'video');
+      newVideoTrack.enabled = !isSharing;
+
       const attStream = stream;
       const currentVideoTrack = attStream
         .getTracks()
@@ -103,7 +106,7 @@ export function RoomProvider({ children }) {
 
       if (currentVideoTrack) {
         attStream.removeTrack(currentVideoTrack);
-        attStream.addTrack(newStream.getTracks().find(t => t.kind === 'video'));
+        attStream.addTrack(newVideoTrack);
       }
       setStream(attStream);
       setIsSharing(v => !v);
@@ -151,7 +154,10 @@ export function RoomProvider({ children }) {
           .getUserMedia({ video: true, audio: true })
           // .getUserMedia({ audio: true })
           .then(getStream => {
-            setStream(getStream);
+            const getedStream = getStream;
+            getedStream.getTracks().find(t => t.kind === 'video').enabled =
+              false;
+            setStream(getedStream);
           });
       } catch (error) {
         console.error('user denied permission', error);
