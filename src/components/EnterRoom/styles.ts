@@ -45,13 +45,14 @@ export const Input = styled.input`
   font-size: 16px;
 `;
 interface ButtonProps {
-  locked: boolean;
+  locked?: boolean;
+  background: string;
 }
 
 export const Button = styled.button<ButtonProps>`
   width: 144px;
   height: 40px;
-  background: #6614d2;
+  background: ${props => props.background};
   border: 0;
   border-radius: 8px;
   color: #fff;

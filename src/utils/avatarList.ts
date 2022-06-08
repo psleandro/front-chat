@@ -1,0 +1,17 @@
+export const avatarList = [
+  '/avatar/default-1.png',
+  '/avatar/default-2.png',
+  '/avatar/default-3.png',
+  '/avatar/default-4.png',
+  '/avatar/default-5.png',
+  '/avatar/default-6.png',
+  '/avatar/default-7.png',
+  '/avatar/default-8.png',
+  '/avatar/default-9.png',
+  '/avatar/default-10.png',
+  '/avatar/default-11.png',
+  '/avatar/default-12.png',
+  '/avatar/default-13.png',
+  '/avatar/default-14.png',
+  '/avatar/default-15.png',
+];

@@ -30,6 +30,7 @@ export interface IUserDto extends IUser, IPeerData {}
 
 export interface AuthContextData {
   user: IUser;
+  userImage: string;
   signInWithGoogle: () => Promise<void>;
   signInWithMicrosoft: () => Promise<void>;
   handleSignOut: () => Promise<void>;

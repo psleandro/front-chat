@@ -36,14 +36,14 @@ function Home() {
               onClick={handleSignInWithGoogle}
             >
               <FaGoogle />
-              Crie sua sala com Google
+              Entrar com o Google
             </S.SignInWithGoogleButton>
             <S.SignInWithMicrosoftButton
               type="button"
               onClick={handleSignInWithMicrosoft}
             >
               <FaMicrosoft />
-              Crie sua sala com Microsoft
+              Entrar com Microsoft
             </S.SignInWithMicrosoftButton>
           </div>
         )}
