@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import {
   AudioMutedOutlined,
   AudioOutlined,
@@ -12,8 +12,14 @@ import * as S from '../styles';
 
 export function UserOptions({ userSharing }: { userSharing: string }) {
   const [muted, setMuted] = useState<boolean>(false);
-  const { isSharing, toggleMicrophone, switchStreamToScreen, ws, myPeer } =
-    useRoom();
+  const {
+    ws,
+    myPeer,
+    allUsers,
+    isSharing,
+    toggleMicrophone,
+    switchStreamToScreen,
+  } = useRoom();
 
   const router = useRouter();
 
@@ -23,6 +29,9 @@ export function UserOptions({ userSharing }: { userSharing: string }) {
   };
 
   const disconnectRoom = () => {
+    if (isSharing) {
+      switchStreamToScreen();
+    }
     ws.disconnect();
     router.push('/');
     ws.connect();
@@ -39,15 +48,29 @@ export function UserOptions({ userSharing }: { userSharing: string }) {
       >
         {muted ? <AudioMutedOutlined /> : <AudioOutlined />}
       </Button>
-      <Button
-        size="large"
-        shape="circle"
-        onClick={() => switchStreamToScreen()}
-        danger={isSharing}
-        type={isSharing ? 'primary' : 'default'}
-        icon={<DesktopOutlined />}
-        disabled={userSharing && userSharing !== myPeer?.id}
-      />
+      <Tooltip
+        color="#ff5252"
+        title={
+          // eslint-disable-next-line no-nested-ternary
+          userSharing
+            ? userSharing === myPeer?.id
+              ? 'Parar de Compartilhar'
+              : `${
+                  allUsers.find(u => u.peerId === userSharing)?.name
+                } já está compartilhando a tela.`
+            : 'Compartilhar Tela'
+        }
+      >
+        <Button
+          size="large"
+          shape="circle"
+          onClick={() => switchStreamToScreen()}
+          danger={isSharing}
+          type={isSharing ? 'primary' : 'default'}
+          icon={<DesktopOutlined />}
+          disabled={userSharing && userSharing !== myPeer?.id}
+        />
+      </Tooltip>
       <Button
         size="large"
         shape="circle"

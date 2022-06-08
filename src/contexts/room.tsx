@@ -73,7 +73,6 @@ export function RoomProvider({ children }) {
   };
 
   const updateUsersMuted = (peerIds: string[]) => {
-    console.log('geted muted users', peerIds);
     setMutedUsers(peerIds);
   };
 
@@ -208,7 +207,14 @@ export function RoomProvider({ children }) {
 
     myPeer.on('call', call => {
       const { username } = call.metadata;
-      call.answer(stream);
+
+      const sendStream = stream;
+      // eslint-disable-next-line no-param-reassign
+      sendStream.onaddtrack = event => {
+        console.log(`New ${event.track.kind} track added`);
+      };
+
+      call.answer(sendStream);
 
       call.on('stream', remotePeerStream => {
         dispatchPeers({
