@@ -20,7 +20,7 @@ export default function SignIn() {
   const handleSignIn = async (fields: FormFields) => {
     setLoading(true);
 
-    await signIn(fields);
+    await signIn('mesha.com', fields);
     setLoading(false);
   };
 

@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+export type ILoginProviders = 'google.com' | 'microsoft.com' | 'mesha.com';
+
 export interface createUserDto {
   userId: string;
   username: string;
@@ -22,18 +24,18 @@ export interface IUser {
   name?: string;
   email?: string;
   image?: string;
-  provider: string;
+  provider: ILoginProviders;
 }
 
 export interface IUserDto extends IUser, IPeerData {}
 
 export interface AuthContextData {
   user: IUser;
-  signInWithGoogle: () => Promise<void>;
-  signInWithMicrosoft: () => Promise<void>;
   handleSignOut: () => Promise<void>;
-  setUser: React.Dispatch<React.SetStateAction<IUser>>;
-  signIn: (credentials: SignInCredentials) => Promise<void>;
+  signIn: (
+    provider: ILoginProviders,
+    credentials?: SignInCredentials
+  ) => Promise<void>;
 }
 
 export interface AuthProviderProps {

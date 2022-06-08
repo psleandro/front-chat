@@ -6,17 +6,17 @@ import { useAuth } from '../src/contexts';
 import * as S from '../styles/home';
 
 function Home() {
-  const { user, signInWithMicrosoft, signInWithGoogle } = useAuth();
+  const { user, signIn } = useAuth();
 
   const handleSignInWithGoogle = async () => {
     if (!user) {
-      await signInWithGoogle();
+      await signIn('google.com');
     }
   };
 
   const handleSignInWithMicrosoft = async () => {
     if (!user) {
-      await signInWithMicrosoft();
+      await signIn('microsoft.com');
     }
   };
 
