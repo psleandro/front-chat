@@ -55,8 +55,9 @@ export function RoomProvider({ children }) {
 
   const [myPeer, setMyPeer] = useState<PeerObj>();
 
+  const [mutedUsers, setMutedUsers] = useState<string[]>([]);
+
   const [isSharing, setIsSharing] = useState<boolean>(false);
-  const [isMicrophoneMuted, setIsMicrophoneMuted] = useState<boolean>(false);
   const [stream, setStream] = useState<MediaStream>();
 
   const [peers, dispatchPeers] = useReducer(peersReducer, {});
@@ -71,17 +72,17 @@ export function RoomProvider({ children }) {
     dispatchPeers({ type: 'REMOVE_PEER_STREAM', payload: { peerId } });
   };
 
-  const handleMuteMicrophone = () => {
-    setIsMicrophoneMuted(prev => !prev);
+  const updateUsersMuted = (peerIds: string[]) => {
+    setMutedUsers(peerIds);
   };
 
   const toggleMicrophone = () => {
-    // handleMuteMicrophone();
     const newStream = stream;
     newStream.getTracks().find(t => t.kind === 'audio').enabled = !stream
       .getTracks()
       .find(t => t.kind === 'audio').enabled;
     setStream(newStream);
+    ws.emit('mute-microphone', roomId, myPeer.id);
   };
 
   const switchStreamToScreen = async () => {
@@ -95,6 +96,9 @@ export function RoomProvider({ children }) {
         ? await navigator.mediaDevices.getUserMedia(constraints)
         : await navigator.mediaDevices.getDisplayMedia(constraints);
 
+      const newVideoTrack = newStream.getTracks().find(t => t.kind === 'video');
+      newVideoTrack.enabled = !isSharing;
+
       const attStream = stream;
       const currentVideoTrack = attStream
         .getTracks()
@@ -102,7 +106,7 @@ export function RoomProvider({ children }) {
 
       if (currentVideoTrack) {
         attStream.removeTrack(currentVideoTrack);
-        attStream.addTrack(newStream.getTracks().find(t => t.kind === 'video'));
+        attStream.addTrack(newVideoTrack);
       }
       setStream(attStream);
       setIsSharing(v => !v);
@@ -150,7 +154,10 @@ export function RoomProvider({ children }) {
           .getUserMedia({ video: true, audio: true })
           // .getUserMedia({ audio: true })
           .then(getStream => {
-            setStream(getStream);
+            const getedStream = getStream;
+            getedStream.getTracks().find(t => t.kind === 'video').enabled =
+              false;
+            setStream(getedStream);
           });
       } catch (error) {
         console.error('user denied permission', error);
@@ -158,12 +165,14 @@ export function RoomProvider({ children }) {
 
       ws.on('get-all-users-connected', getUsers);
       ws.on('user-disconnected', removePeer);
+      ws.on('update-users-muted', updateUsersMuted);
     }
 
     // eslint-disable-next-line consistent-return
     return () => {
       ws.off('get-all-users-connected');
       ws.off('user-disconnected');
+      ws.off('update-users-muted');
 
       myPeer?.disconnect();
     };
@@ -204,7 +213,14 @@ export function RoomProvider({ children }) {
 
     myPeer.on('call', call => {
       const { username } = call.metadata;
-      call.answer(stream);
+
+      const sendStream = stream;
+      // eslint-disable-next-line no-param-reassign
+      sendStream.onaddtrack = event => {
+        console.log(`New ${event.track.kind} track added`);
+      };
+
+      call.answer(sendStream);
 
       call.on('stream', remotePeerStream => {
         dispatchPeers({
@@ -231,8 +247,7 @@ export function RoomProvider({ children }) {
         isSharing,
         switchStreamToScreen,
         allUsers,
-        isMicrophoneMuted,
-        handleMuteMicrophone,
+        mutedUsers,
       }}
     >
       {children}
