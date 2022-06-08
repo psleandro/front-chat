@@ -7,7 +7,6 @@ import * as S from '../styles';
 import { getImageUrl } from '../../../../utils/user';
 
 export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
-  const { stream, isSharing, myPeer, isMicrophoneMuted } = useRoom();
   const { userImage } = useAuth();
   const { stream, isSharing, myPeer, mutedUsers } = useRoom();
 
