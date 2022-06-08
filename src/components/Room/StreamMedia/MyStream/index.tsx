@@ -7,8 +7,8 @@ import * as S from '../styles';
 import { getImageUrl } from '../../../../utils/user';
 
 export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
+  const { userImage } = useAuth();
   const { stream, isSharing, myPeer, mutedUsers } = useRoom();
-  const { user } = useAuth();
 
   const [isSpeaking, setIsSpeaking] = useState<number>();
   const myMedia = useRef<HTMLVideoElement>(null);
@@ -28,7 +28,7 @@ export function MyStreamCard({ peerSharing }: { peerSharing: string }) {
     >
       <video ref={myMedia} hidden={!isSharing} muted autoPlay />
       <S.UserCard speaking={isSpeaking} isSharing={isSharing}>
-        <Image src={getImageUrl(user)} width={150} height={150} alt="avatar" />
+        <Image src={userImage} width={150} height={150} alt="avatar" />
       </S.UserCard>
       <S.NameContainer>Você</S.NameContainer>
       {mutedUsers.includes(myPeer?.id) && <AudioMutedOutlined />}

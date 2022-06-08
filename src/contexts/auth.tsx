@@ -25,6 +25,7 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<IUser>();
+  const [userImage, setUserImage] = useState('/avatar/default-1.png');
   const auth = getAuth();
 
   const router = useRouter();
@@ -320,10 +321,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  useEffect(() => {
+    if (
+      user &&
+      (user.provider === 'google.com' || user?.image?.startsWith('/avatar'))
+    ) {
+      setUserImage(user?.image);
+    } else if (user && user.image) {
+      setUserImage(`data:image/jpeg;base64,${user?.image}`);
+    } else {
+      setUserImage('/avatar/default-1.png');
+    }
+  }, [user]);
+
   return (
     <AuthContext.Provider
       value={{
         user,
+        userImage,
         signInWithGoogle,
         signInWithMicrosoft,
         handleSignOut,
